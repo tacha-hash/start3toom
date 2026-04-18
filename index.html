@@ -473,9 +473,9 @@ function switchStream(key) {
     else chatFrame.innerHTML = '';
   }
 
-  // Update HOME view stream (chat is independent via switchChat)
+  // Update HOME view stream (always update, regardless of currentView)
   const homeStream = document.getElementById('home-stream');
-  if (homeStream && currentView === 'home') {
+  if (homeStream) {
     homeStream.innerHTML = embed || placeholder(key, ch);
   }
   // Auto-switch chat to match stream if no chat selected yet
