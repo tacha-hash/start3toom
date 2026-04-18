@@ -147,9 +147,19 @@
               </div>
             </div>
           </div>
-          <div class="w-[340px] hidden lg:block rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-800/50 aspect-video" id="home-chat">
-            <div class="w-full h-full flex items-center justify-center">
-              <p class="text-gray-600 text-xs">Chat appears when live</p>
+          <div class="w-[340px] hidden lg:flex flex-col rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-800/50 aspect-video" id="home-chat-wrap">
+            <!-- Chat channel selector -->
+            <div class="flex items-center gap-1 px-2 py-1.5 border-b border-dark-600/20 overflow-x-auto">
+              <span class="text-[10px] text-gray-500 tracking-wider mr-1">CHAT:</span>
+              <button onclick="switchChat('louis')" data-chat="louis" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">หลุยส์</button>
+              <button onclick="switchChat('job')" data-chat="job" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">แปะ</button>
+              <button onclick="switchChat('geng')" data-chat="geng" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">เจง</button>
+              <button onclick="switchChat('kk')" data-chat="kk" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-purple-400 transition-colors cursor-pointer">เค</button>
+            </div>
+            <div class="flex-1" id="home-chat">
+              <div class="w-full h-full flex items-center justify-center">
+                <p class="text-gray-600 text-xs">Select chat channel above</p>
+              </div>
             </div>
           </div>
         </div>
@@ -219,9 +229,12 @@
       <div class="flex gap-3" style="height:calc(100vh - 120px);">
         <div class="flex-1 rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-900" id="single-stream"></div>
         <div class="w-[360px] hidden lg:flex flex-col rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-800/50" id="single-chat">
-          <div class="px-4 py-2 border-b border-dark-600/20 flex items-center justify-between">
-            <span class="text-xs text-gray-400 tracking-wider uppercase font-display">Live Chat</span>
-            <span class="text-[10px] text-gray-600" id="single-chat-name"></span>
+          <div class="px-3 py-1.5 border-b border-dark-600/20 flex items-center gap-1 overflow-x-auto">
+            <span class="text-[10px] text-gray-500 tracking-wider mr-1">CHAT:</span>
+            <button onclick="switchChat('louis')" data-chat="louis" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">หลุยส์</button>
+            <button onclick="switchChat('job')" data-chat="job" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">แปะ</button>
+            <button onclick="switchChat('geng')" data-chat="geng" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">เจง</button>
+            <button onclick="switchChat('kk')" data-chat="kk" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-purple-400 transition-colors cursor-pointer">เค</button>
           </div>
           <div class="flex-1" id="single-chat-frame"></div>
         </div>
@@ -262,9 +275,12 @@
         </div>
         <!-- Chat panel -->
         <div class="w-[340px] hidden lg:flex flex-col rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-800/50">
-          <div class="px-4 py-2 border-b border-dark-600/20 flex items-center justify-between">
-            <span class="text-xs text-gray-400 tracking-wider uppercase font-display">Live Chat</span>
-            <span class="text-[10px] text-gray-600" id="mv-chat-name">หลุยส์</span>
+          <div class="px-3 py-1.5 border-b border-dark-600/20 flex items-center gap-1 overflow-x-auto">
+            <span class="text-[10px] text-gray-500 tracking-wider mr-1">CHAT:</span>
+            <button onclick="switchChat('louis')" data-chat="louis" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">หลุยส์</button>
+            <button onclick="switchChat('job')" data-chat="job" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">แปะ</button>
+            <button onclick="switchChat('geng')" data-chat="geng" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">เจง</button>
+            <button onclick="switchChat('kk')" data-chat="kk" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-purple-400 transition-colors cursor-pointer">เค</button>
           </div>
           <div class="flex-1" id="mv-chat-frame"></div>
         </div>
@@ -394,14 +410,50 @@ function switchStream(key) {
     else chatFrame.innerHTML = '';
   }
 
-  // Update HOME view stream + chat
+  // Update HOME view stream (chat is independent via switchChat)
   const homeStream = document.getElementById('home-stream');
   if (homeStream && currentView === 'home') {
     homeStream.innerHTML = embed || placeholder(key, ch);
   }
+  // Auto-switch chat to match stream if no chat selected yet
+  if (!activeChatChannel) switchChat(key);
+}
+
+// === INDEPENDENT CHAT SWITCHER ===
+let activeChatChannel = null;
+function switchChat(key) {
+  const ch = CHANNELS[key];
+  if (!ch) return;
+  activeChatChannel = key;
+  const chat = getChat(ch);
+
+  // Highlight active chat tab
+  document.querySelectorAll('.chat-tab').forEach(t => {
+    const a = t.dataset.chat === key;
+    t.classList.toggle('bg-dark-700', a);
+    t.classList.toggle('text-cyan-400', a && ch.color === 'cyan');
+    t.classList.toggle('text-purple-400', a && ch.color === 'purple');
+    t.classList.toggle('text-gray-500', !a);
+  });
+
+  // Update HOME chat
   const homeChat = document.getElementById('home-chat');
-  if (homeChat && currentView === 'home') {
-    homeChat.innerHTML = chat || '<div class="w-full h-full flex items-center justify-center"><p class="text-gray-600 text-xs">Chat appears when live</p></div>';
+  if (homeChat) {
+    homeChat.innerHTML = chat || '<div class="w-full h-full flex items-center justify-center"><p class="text-gray-600 text-xs">Not live</p></div>';
+  }
+
+  // Update SINGLE view chat
+  const singleChat = document.getElementById('single-chat-frame');
+  if (singleChat && currentView === 'single') {
+    document.getElementById('single-chat-name').textContent = ch.name;
+    singleChat.innerHTML = chat || '';
+  }
+
+  // Update MULTI view chat
+  const mvChat = document.getElementById('mv-chat-frame');
+  if (mvChat && currentView === 'multi') {
+    document.getElementById('mv-chat-name').textContent = ch.name;
+    mvChat.innerHTML = chat || '<div class="flex items-center justify-center h-full text-gray-600 text-xs">No chat</div>';
   }
 }
 
