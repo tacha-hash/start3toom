@@ -71,6 +71,7 @@
           <button onclick="setView('home')" id="btn-home" class="px-3 py-1.5 tracking-wider bg-dark-700 text-cyan-400">HOME</button>
           <button onclick="setView('single')" id="btn-single" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">LIVE</button>
           <button onclick="setView('multi')" id="btn-multi" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">4-VIEW</button>
+          <button onclick="setView('content')" id="btn-content" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">CONTENT</button>
         </div>
         <div id="live-badge" class="hidden bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full live-pulse tracking-wider">LIVE</div>
       </div>
@@ -81,8 +82,12 @@
   <div id="view-home">
     <main class="max-w-5xl mx-auto px-4 py-8 space-y-12">
 
-      <!-- Hero -->
-      <section class="relative hero-gradient rounded-3xl overflow-hidden scanlines">
+      <!-- Hero with game bg -->
+      <section class="relative rounded-3xl overflow-hidden scanlines">
+        <div class="absolute inset-0 z-0">
+          <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3527290/31bac6b2eccf09b368f5e95ce510bae2baf3cfcd/header.jpg?t=1775581133" class="w-full h-full object-cover opacity-15" id="hero-bg-img">
+          <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/80 to-dark-950/60"></div>
+        </div>
         <div class="relative z-10 p-6 sm:p-8">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div class="flex-1">
@@ -165,107 +170,35 @@
         </div>
       </section>
 
-      <!-- Previous Episodes -->
-      <section>
-        <h2 class="font-display text-sm tracking-widest text-cyan-500 uppercase mb-4">Previous Episodes</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <a href="https://www.youtube.com/watch?v=gYulBc9bgn0" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/gYulBc9bgn0/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">เกมนี้ดี เสริมสร้างความสามัคคี</p><p class="text-[10px] text-gray-500">GenghisKhanz · feat. saytanaa, j3cha, THISKK</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=OhmYtnyFC_Q" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/OhmYtnyFC_Q/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">RV There YET</p><p class="text-[10px] text-gray-500">GenghisKhanz</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=ZC6w_66jpS8" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/ZC6w_66jpS8/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">Baldur's Gate 3 Ep.4</p><p class="text-[10px] text-gray-500">GenghisKhanz</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=4F7ML5IWIlc" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/4F7ML5IWIlc/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">Hollow Knight Silksong EP.1</p><p class="text-[10px] text-gray-500">GenghisKhanz</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=5qy93hX0a5M" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/5qy93hX0a5M/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">Hollow Knight Silksong EP.3</p><p class="text-[10px] text-gray-500">GenghisKhanz</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=tn9K2aEIqDQ" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/tn9K2aEIqDQ/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">Hollow Knight Silksong EP.5</p><p class="text-[10px] text-gray-500">GenghisKhanz</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=n39GT_QddH0" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/n39GT_QddH0/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">PEAK : จะออกไปแตะขอบฟ้า</p><p class="text-[10px] text-gray-500">saytanaa</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=bPqdoXZKqbA" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/bPqdoXZKqbA/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">DOKAPON! : ทะเลาะกับจอย ไม่ทะเลาะกับมึง</p><p class="text-[10px] text-gray-500">saytanaa</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=wWTYfNnRpE0" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/wWTYfNnRpE0/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">HUMANITZ : ซอมบี้ซีบ้อม</p><p class="text-[10px] text-gray-500">saytanaa</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=X9_1P4-IrIA" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/X9_1P4-IrIA/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">BATTLEFIELD V : สงครามคนบ้า</p><p class="text-[10px] text-gray-500">saytanaa</p></div>
-          </a>
-          <a href="https://www.youtube.com/watch?v=REwhiuqTvHY" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
-            <div class="relative"><img src="https://img.youtube.com/vi/REwhiuqTvHY/hqdefault.jpg" alt="Episode" class="w-full aspect-video object-cover">
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
-            </div>
-            <div class="p-3"><p class="text-xs font-medium truncate">MIMESIS : กูบอกให้ออกรถ!!!</p><p class="text-[10px] text-gray-500">saytanaa</p></div>
-          </a>
+      <!-- Vote (PROMINENT) -->
+      <section class="relative">
+        <div class="text-center mb-6">
+          <h2 class="font-display text-2xl tracking-wide text-accent-orange glow-text-orange">VOTE NEXT GAME</h2>
+          <p class="text-gray-400 text-sm mt-1">เลือกเกมส์ที่อยากดูอาทิตย์หน้า — กดได้เลย!</p>
         </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="vote-grid"></div>
       </section>
 
-      <!-- Vote -->
-      <section>
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="font-display text-sm tracking-widest text-accent-orange uppercase glow-text-orange">Vote Next Game</h2>
-          <span class="text-[10px] text-gray-600 tracking-wider">CHOOSE ONE</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="vote-grid"></div>
-      </section>
-
-      <!-- Schedule -->
+      <!-- Calendar Schedule -->
       <section>
         <h2 class="font-display text-sm tracking-widest text-accent-green uppercase mb-4">Schedule</h2>
-        <div class="bg-dark-800/50 rounded-2xl border border-dark-600/30 overflow-hidden backdrop-blur">
-          <table class="w-full text-sm">
-            <thead><tr class="border-b border-dark-600/30">
-              <th class="px-5 py-3 text-left text-[10px] tracking-widest text-gray-500 uppercase">Date</th>
-              <th class="px-5 py-3 text-left text-[10px] tracking-widest text-gray-500 uppercase">Game</th>
-              <th class="px-5 py-3 text-left text-[10px] tracking-widest text-gray-500 uppercase">Status</th>
-            </tr></thead>
-            <tbody id="schedule-body" class="divide-y divide-dark-600/20"></tbody>
-          </table>
+        <div class="bg-dark-800/50 rounded-2xl border border-dark-600/30 overflow-hidden backdrop-blur p-4">
+          <div class="flex items-center justify-between mb-3">
+            <button onclick="calPrev()" class="text-gray-500 hover:text-cyan-400 px-2 cursor-pointer">&lt;</button>
+            <span class="font-display text-sm tracking-wider text-gray-300" id="cal-month"></span>
+            <button onclick="calNext()" class="text-gray-500 hover:text-cyan-400 px-2 cursor-pointer">&gt;</button>
+          </div>
+          <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-gray-500 mb-2">
+            <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+          </div>
+          <div class="grid grid-cols-7 gap-1" id="cal-grid"></div>
         </div>
       </section>
 
-      <!-- Recommended -->
+      <!-- Game Recommendations (expandable) -->
       <section>
-        <h2 class="font-display text-sm tracking-widest text-cyan-400 uppercase mb-4">New Releases</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="recommend-grid"></div>
+        <h2 class="font-display text-sm tracking-widest text-cyan-400 uppercase mb-4">Game Recommendations</h2>
+        <div class="space-y-2" id="recommend-list"></div>
       </section>
     </main>
   </div>
@@ -351,6 +284,30 @@
     </div>
   </div>
 
+  <!-- ==================== CONTENT VIEW (per channel videos) ==================== -->
+  <div id="view-content" class="hidden">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <h2 class="font-display text-lg tracking-wide text-cyan-400 glow-text mb-6">CONTENT</h2>
+      <!-- Channel filter -->
+      <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <button onclick="filterContent('all')" data-cf="all" class="cf-tab px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-700 text-cyan-400 text-sm cursor-pointer">All</button>
+        <button onclick="filterContent('louis')" data-cf="louis" class="cf-tab px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm cursor-pointer flex items-center gap-2">
+          <img src="assets/profiles/louis.png" class="w-6 h-6 rounded-full">หลุยส์
+        </button>
+        <button onclick="filterContent('geng')" data-cf="geng" class="cf-tab px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm cursor-pointer flex items-center gap-2">
+          <img src="assets/profiles/geng.png" class="w-6 h-6 rounded-full">เจง
+        </button>
+        <button onclick="filterContent('job')" data-cf="job" class="cf-tab px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm cursor-pointer flex items-center gap-2">
+          <img src="assets/profiles/job.png" class="w-6 h-6 rounded-full">แปะ
+        </button>
+        <button onclick="filterContent('kk')" data-cf="kk" class="cf-tab px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm cursor-pointer flex items-center gap-2">
+          <img src="assets/profiles/kk.png" class="w-6 h-6 rounded-full">เค
+        </button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="content-grid"></div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="border-t border-dark-600/20 mt-10 py-6">
     <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -402,7 +359,9 @@ function setView(v) {
   document.getElementById('view-home').classList.toggle('hidden', v !== 'home');
   document.getElementById('view-single').classList.toggle('hidden', v !== 'single');
   document.getElementById('view-multi').classList.toggle('hidden', v !== 'multi');
-  ['home','single','multi'].forEach(id => {
+  document.getElementById('view-content').classList.toggle('hidden', v !== 'content');
+  if (v === 'content') renderContent();
+  ['home','single','multi','content'].forEach(id => {
     const btn = document.getElementById('btn-'+id);
     btn.classList.toggle('bg-dark-700', v===id);
     btn.classList.toggle('text-cyan-400', v===id);
@@ -558,34 +517,132 @@ function saveVotes(v) { localStorage.setItem('s3t_votes', JSON.stringify(v)); }
 function hasVoted() { return localStorage.getItem('s3t_voted')==='true'; }
 function vote(id) { if(hasVoted()) return; const v=getVotes(); v[id]=(v[id]||0)+1; saveVotes(v); localStorage.setItem('s3t_voted','true'); renderVotes(); }
 
+// Vote — prominent cards
 function renderVotes() {
   const votes=getVotes(), voted=hasVoted(), total=Object.values(votes).reduce((a,b)=>a+b,0);
-  document.getElementById('vote-grid').innerHTML = GAMES.map(g => {
+  const sorted = [...GAMES].sort((a,b) => (votes[b.id]||0) - (votes[a.id]||0));
+  document.getElementById('vote-grid').innerHTML = sorted.map((g,i) => {
     const c=votes[g.id]||0, pct=total>0?Math.round(c/total*100):0;
+    const isTop = voted && i === 0 && c > 0;
     const tc = g.tag==='FREE'?'bg-accent-green/20 text-accent-green':g.tag==='NEW'?'bg-cyan-500/20 text-cyan-400':'';
-    return `<div class="bg-dark-800/50 rounded-xl border border-dark-600/30 overflow-hidden card-hover backdrop-blur">
-      <div class="relative"><img src="${g.img}" alt="${g.name}" class="w-full h-36 object-cover" loading="lazy" onerror="this.parentElement.style.display='none'">
-      ${g.tag?`<span class="absolute top-2 right-2 text-[10px] font-bold tracking-wider px-2 py-0.5 rounded ${tc}">${g.tag}</span>`:''}</div>
-      <div class="p-4"><a href="${g.steam}" target="_blank" class="font-display text-sm tracking-wide hover:text-cyan-400 transition-colors">${g.name}</a>
-      <p class="text-xs text-gray-500 mt-0.5">${g.desc}</p><p class="text-[10px] text-gray-600 mt-1">${g.players} · ${g.price}</p>
-      <button onclick="vote('${g.id}')" class="vote-btn w-full mt-3 py-2 rounded-lg text-xs font-medium tracking-wider ${voted?'bg-dark-700 text-gray-500 cursor-default':'bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 border border-cyan-500/20'}" ${voted?'disabled':''}>${voted?`${c} VOTES (${pct}%)`:'VOTE'}</button>
-      ${voted&&total>0?`<div class="mt-2 bg-dark-900 rounded-full h-1 overflow-hidden"><div class="vote-bar bg-cyan-500/60 h-full rounded-full" style="width:${pct}%"></div></div>`:''}</div></div>`;
+    return `<div class="bg-dark-800/50 rounded-2xl border ${isTop?'border-accent-orange/40 glow-cyan':'border-dark-600/30'} overflow-hidden card-hover backdrop-blur">
+      <div class="relative"><img src="${g.img}" alt="${g.name}" class="w-full h-40 object-cover" loading="lazy" onerror="this.parentElement.style.display='none'">
+      ${g.tag?`<span class="absolute top-2 right-2 text-[10px] font-bold tracking-wider px-2 py-0.5 rounded ${tc}">${g.tag}</span>`:''}
+      ${isTop?'<span class="absolute top-2 left-2 text-xs bg-accent-orange text-white px-2 py-0.5 rounded font-bold">TOP</span>':''}</div>
+      <div class="p-4"><a href="${g.steam}" target="_blank" class="font-display text-base tracking-wide hover:text-cyan-400 transition-colors">${g.name}</a>
+      <p class="text-xs text-gray-500 mt-1">${g.desc}</p>
+      <p class="text-[10px] text-gray-600 mt-1">${g.players} players · ${g.price}</p>
+      <button onclick="vote('${g.id}')" class="vote-btn w-full mt-3 py-2.5 rounded-xl text-sm font-bold tracking-wider ${voted?'bg-dark-700 text-gray-500 cursor-default':'bg-gradient-to-r from-cyan-500/20 to-accent-orange/20 text-white hover:from-cyan-500/30 hover:to-accent-orange/30 border border-cyan-500/20'}" ${voted?'disabled':''}>${voted?`${c} VOTES (${pct}%)`:'VOTE'}</button>
+      ${voted&&total>0?`<div class="mt-2 bg-dark-900 rounded-full h-1.5 overflow-hidden"><div class="vote-bar ${isTop?'bg-accent-orange':'bg-cyan-500/60'} h-full rounded-full" style="width:${pct}%"></div></div>`:''}</div></div>`;
   }).join('');
 }
 
-function renderSchedule() {
-  const s={upcoming:'<span class="text-cyan-400 font-medium">This Week</span>',vote:'<span class="text-gray-500">Vote Open</span>',done:'<span class="text-gray-600">Played</span>',cancelled:'<span class="text-red-400/60">Skipped</span>'};
-  document.getElementById('schedule-body').innerHTML = SCHEDULE.map(r=>`<tr class="hover:bg-dark-700/30 transition-colors"><td class="px-5 py-3 text-gray-300 text-sm">${r.date}</td><td class="px-5 py-3 text-sm ${r.status==='upcoming'?'text-cyan-400 font-medium':'text-gray-400'}">${r.game}</td><td class="px-5 py-3 text-xs">${s[r.status]||r.status}</td></tr>`).join('');
-}
+// Calendar Schedule
+let calDate = new Date();
+const EVENTS = {};
+SCHEDULE.forEach(s => {
+  // Parse Thai date to key
+  const m = s.date.match(/(\d+)\s*(เม\.ย\.|พ\.ค\.)/);
+  if (m) {
+    const month = m[2] === 'เม.ย.' ? 3 : 4; // 0-indexed
+    const key = `2026-${String(month+1).padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+    EVENTS[key] = s;
+  }
+});
 
+function renderCalendar() {
+  const y = calDate.getFullYear(), m = calDate.getMonth();
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month').textContent = `${months[m]} ${y}`;
+  const first = new Date(y, m, 1).getDay();
+  const days = new Date(y, m+1, 0).getDate();
+  const today = new Date();
+  let html = '';
+  for (let i = 0; i < first; i++) html += '<div></div>';
+  for (let d = 1; d <= days; d++) {
+    const key = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const ev = EVENTS[key];
+    const isToday = today.getFullYear()===y && today.getMonth()===m && today.getDate()===d;
+    const isSunday = new Date(y, m, d).getDay() === 0;
+    let cls = 'p-1.5 rounded-lg text-center text-xs transition-colors ';
+    let dot = '';
+    if (ev) {
+      if (ev.status==='upcoming') { cls += 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'; dot = `<p class="text-[8px] text-cyan-400 truncate mt-0.5">${ev.game}</p>`; }
+      else if (ev.status==='done') { cls += 'bg-dark-700 text-gray-400'; dot = `<p class="text-[8px] text-gray-500 truncate mt-0.5">${ev.game}</p>`; }
+      else if (ev.status==='cancelled') { cls += 'bg-red-500/10 text-red-400/60'; dot = '<p class="text-[8px] text-red-400/40 mt-0.5">Skipped</p>'; }
+      else if (ev.status==='vote') { cls += 'bg-accent-orange/10 text-accent-orange/60 border border-accent-orange/20'; dot = '<p class="text-[8px] text-accent-orange/60 mt-0.5">Vote</p>'; }
+    } else if (isToday) { cls += 'bg-dark-600 text-white font-bold'; }
+    else if (isSunday) { cls += 'text-cyan-400/40'; }
+    else { cls += 'text-gray-600 hover:bg-dark-700'; }
+    html += `<div class="${cls}"><span>${d}</span>${dot}</div>`;
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+}
+function calPrev() { calDate.setMonth(calDate.getMonth()-1); renderCalendar(); }
+function calNext() { calDate.setMonth(calDate.getMonth()+1); renderCalendar(); }
+
+// Game Recommendations — expandable
 function renderRecommend() {
-  document.getElementById('recommend-grid').innerHTML = GAMES.filter(g=>g.tag).map(g=>{
-    const tc=g.tag==='FREE'?'text-accent-green':'text-cyan-400';
-    return `<a href="${g.steam}" target="_blank" class="flex gap-4 bg-dark-800/30 rounded-xl p-3 border border-dark-600/20 card-hover backdrop-blur group">
-      <img src="${g.img}" alt="${g.name}" class="w-24 h-14 object-cover rounded-lg flex-shrink-0" loading="lazy" onerror="this.style.display='none'">
-      <div class="min-w-0"><p class="text-sm font-medium group-hover:text-cyan-400 transition-colors">${g.name} <span class="text-[10px] ${tc}">${g.tag}</span></p>
-      <p class="text-xs text-gray-500 truncate">${g.desc}</p><p class="text-[10px] text-gray-600 mt-0.5">${g.players} · ${g.price}</p></div></a>`;
+  document.getElementById('recommend-list').innerHTML = GAMES.map(g => {
+    const tc = g.tag==='FREE'?'text-accent-green':g.tag==='NEW'?'text-cyan-400':'text-gray-500';
+    return `<div class="bg-dark-800/30 rounded-xl border border-dark-600/20 overflow-hidden backdrop-blur">
+      <button onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.arrow').classList.toggle('rotate-180')"
+        class="w-full flex items-center gap-4 p-3 text-left hover:bg-dark-700/30 transition-colors cursor-pointer">
+        <img src="${g.img}" alt="${g.name}" class="w-16 h-10 object-cover rounded-lg flex-shrink-0" loading="lazy" onerror="this.style.display='none'">
+        <div class="flex-1 min-w-0">
+          <span class="text-sm font-medium">${g.name}</span>
+          ${g.tag?`<span class="text-[10px] ${tc} ml-2">${g.tag}</span>`:''}
+          <span class="text-[10px] text-gray-600 ml-2">${g.players} · ${g.price}</span>
+        </div>
+        <svg class="arrow w-4 h-4 text-gray-500 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="hidden px-4 pb-4 pt-1 border-t border-dark-600/20">
+        <p class="text-sm text-gray-300">${g.desc}</p>
+        <div class="flex items-center gap-3 mt-3">
+          <a href="${g.steam}" target="_blank" class="text-xs text-cyan-400 hover:text-cyan-300">View on Steam →</a>
+          <span class="text-[10px] text-gray-600">${g.players} players · ${g.price}</span>
+        </div>
+      </div>
+    </div>`;
   }).join('');
+}
+
+// Content view — per channel videos
+const VIDEOS = [
+  { ch:'geng', title:'เกมนี้ดี เสริมสร้างความสามัคคี', vid:'gYulBc9bgn0', note:'feat. saytanaa, j3cha, THISKK' },
+  { ch:'geng', title:'RV There YET', vid:'OhmYtnyFC_Q' },
+  { ch:'geng', title:"Baldur's Gate 3 Ep.4", vid:'ZC6w_66jpS8' },
+  { ch:'geng', title:'Hollow Knight Silksong EP.1', vid:'4F7ML5IWIlc' },
+  { ch:'geng', title:'Hollow Knight Silksong EP.3', vid:'5qy93hX0a5M' },
+  { ch:'geng', title:'Hollow Knight Silksong EP.5', vid:'tn9K2aEIqDQ' },
+  { ch:'louis', title:'PEAK : จะออกไปแตะขอบฟ้า', vid:'n39GT_QddH0' },
+  { ch:'louis', title:'DOKAPON! : ทะเลาะกับจอย', vid:'bPqdoXZKqbA' },
+  { ch:'louis', title:'HUMANITZ : ซอมบี้ซีบ้อม', vid:'wWTYfNnRpE0' },
+  { ch:'louis', title:'BATTLEFIELD V : สงครามคนบ้า', vid:'X9_1P4-IrIA' },
+  { ch:'louis', title:'MIMESIS : กูบอกให้ออกรถ!!!', vid:'REwhiuqTvHY' },
+  { ch:'louis', title:'ก๊อกแก๊ก', vid:'b61eBbhIRSQ' },
+];
+const CH_NAMES = { louis:'หลุยส์ (saytanaa)', geng:'เจง (GenghisKhanz)', job:'แปะ (j3cha)', kk:'เค (THISKK)' };
+let contentFilter = 'all';
+function filterContent(f) {
+  contentFilter = f;
+  document.querySelectorAll('.cf-tab').forEach(t => {
+    const a = t.dataset.cf === f;
+    t.classList.toggle('bg-dark-700', a); t.classList.toggle('text-cyan-400', a);
+    t.classList.toggle('bg-dark-800/50', !a); t.classList.toggle('text-gray-500', !a && !t.classList.contains('text-cyan-400'));
+  });
+  renderContent();
+}
+function renderContent() {
+  const vids = contentFilter === 'all' ? VIDEOS : VIDEOS.filter(v => v.ch === contentFilter);
+  document.getElementById('content-grid').innerHTML = vids.length ? vids.map(v => `
+    <a href="https://www.youtube.com/watch?v=${v.vid}" target="_blank" class="rounded-xl overflow-hidden card-hover border border-dark-600/30 group">
+      <div class="relative"><img src="https://img.youtube.com/vi/${v.vid}/hqdefault.jpg" alt="${v.title}" class="w-full aspect-video object-cover">
+        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-3xl">▶</span></div>
+      </div>
+      <div class="p-3"><p class="text-xs font-medium truncate">${v.title}</p>
+      <p class="text-[10px] text-gray-500">${CH_NAMES[v.ch]||v.ch}${v.note?' · '+v.note:''}</p></div>
+    </a>`).join('') : '<p class="text-gray-600 text-sm col-span-3 text-center py-8">No content yet</p>';
 }
 
 function updateCountdown() {
@@ -612,7 +669,7 @@ async function checkLiveStatus() {
 checkLiveStatus(); setInterval(checkLiveStatus, 30000);
 
 // === INIT ===
-renderVotes(); renderSchedule(); renderRecommend(); updateCountdown();
+renderVotes(); renderCalendar(); renderRecommend(); updateCountdown();
 setInterval(updateCountdown, 1000);
 </script>
 </body>
