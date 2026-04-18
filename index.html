@@ -405,12 +405,38 @@ const SCHEDULE = [
 // === VIEW SWITCHING ===
 let currentView = 'home';
 function setView(v) {
+  const prevView = currentView;
   currentView = v;
   document.getElementById('view-home').classList.toggle('hidden', v !== 'home');
   document.getElementById('view-single').classList.toggle('hidden', v !== 'single');
   document.getElementById('view-multi').classList.toggle('hidden', v !== 'multi');
   document.getElementById('view-content').classList.toggle('hidden', v !== 'content');
   document.getElementById('view-report').classList.toggle('hidden', v !== 'report');
+
+  // Destroy iframes from previous view to stop audio
+  if (prevView !== v) {
+    if (prevView === 'home' || prevView !== v) {
+      const hs = document.getElementById('home-stream');
+      if (hs && v !== 'home') hs.innerHTML = '';
+      const hc = document.getElementById('home-chat');
+      if (hc && v !== 'home') hc.innerHTML = '';
+    }
+    if (prevView === 'single' || v !== 'single') {
+      const ss = document.getElementById('single-stream');
+      if (ss && v !== 'single') ss.innerHTML = '';
+      const sc = document.getElementById('single-chat-frame');
+      if (sc && v !== 'single') sc.innerHTML = '';
+    }
+    if (prevView === 'multi' || v !== 'multi') {
+      ['louis','job','geng','kk'].forEach(k => {
+        const el = document.getElementById('mv-'+k);
+        if (el && v !== 'multi') el.innerHTML = '';
+      });
+      const mc = document.getElementById('mv-chat-frame');
+      if (mc && v !== 'multi') mc.innerHTML = '';
+    }
+  }
+
   if (v === 'content') renderContent();
   if (v === 'report') renderReports();
   ['home','single','multi','content','report'].forEach(id => {
@@ -419,6 +445,8 @@ function setView(v) {
     btn.classList.toggle('text-cyan-400', v===id);
     btn.classList.toggle('text-gray-500', v!==id);
   });
+  // Rebuild iframes for active view
+  if (v === 'home' && activeStream) switchStream(activeStream);
   if (v === 'single' && activeStream) switchStream(activeStream);
   if (v === 'multi') mvInit();
 }
