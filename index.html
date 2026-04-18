@@ -463,7 +463,7 @@ function twEmbed(user, mute=false) {
   return `<iframe src="https://player.twitch.tv/?channel=${user}&parent=${location.hostname}&autoplay=true${mute?'&muted=true':''}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>`;
 }
 function ytChat(videoId) {
-  return `<iframe src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${location.hostname}&dark_theme=1" class="w-full h-full" frameborder="0"></iframe>`;
+  return `<iframe src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${location.hostname}&dark_theme=1&is_popout=1" class="w-full h-full" frameborder="0" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>`;
 }
 function twChat(user) {
   return `<iframe src="https://www.twitch.tv/embed/${user}/chat?parent=${location.hostname}&darkpopout" class="w-full h-full" frameborder="0"></iframe>`;
