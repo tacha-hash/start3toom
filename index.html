@@ -463,20 +463,23 @@ function switchStream(key) {
   const embed = getEmbed(ch);
   const chat = getChat(ch);
 
-  // Update SINGLE view
-  const el = document.getElementById('single-stream');
-  if (el) { el.innerHTML = embed || placeholder(key, ch); }
+  // Only update the ACTIVE view's stream player (avoid duplicate YouTube embeds)
+  if (currentView === 'single') {
+    const el = document.getElementById('single-stream');
+    if (el) el.innerHTML = embed || placeholder(key, ch);
+    document.getElementById('home-stream').innerHTML = '';
+  } else {
+    const homeStream = document.getElementById('home-stream');
+    if (homeStream) homeStream.innerHTML = embed || placeholder(key, ch);
+    document.getElementById('single-stream').innerHTML = '';
+  }
+
+  // Update SINGLE chat
   const chatFrame = document.getElementById('single-chat-frame');
   if (chatFrame) {
     document.getElementById('single-chat-name').textContent = ch.name;
     if (chat) chatFrame.innerHTML = chat;
     else chatFrame.innerHTML = '';
-  }
-
-  // Update HOME view stream (always update, regardless of currentView)
-  const homeStream = document.getElementById('home-stream');
-  if (homeStream) {
-    homeStream.innerHTML = embed || placeholder(key, ch);
   }
   // Auto-switch chat to match stream if no chat selected yet
   if (!activeChatChannel) switchChat(key);
