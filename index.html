@@ -861,10 +861,18 @@ async function checkLiveStatus() {
       dots.forEach(d => d.classList.toggle('hidden', !i.live));
     }
     document.getElementById('live-badge').classList.toggle('hidden', !anyActuallyLive);
-    // Auto-switch to first live channel (only if not already showing)
+    // Auto-switch or rebuild chat if videoId just arrived
     if (!activeStream && anyActuallyLive) {
       const first = Object.keys(CHANNELS).find(k => CHANNELS[k].live);
       if (first) switchStream(first);
+    } else if (activeStream) {
+      // Rebuild chat only (not stream) if videoId changed
+      const ch = CHANNELS[activeStream];
+      const chat = getChat(ch);
+      const homeChat = document.getElementById('home-chat');
+      if (homeChat && currentView === 'home' && chat && !homeChat.querySelector('iframe')) {
+        homeChat.innerHTML = chat;
+      }
     }
   } catch { /* API not ready */ }
 }
