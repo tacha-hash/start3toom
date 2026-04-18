@@ -123,65 +123,48 @@
         </div>
       </section>
 
-      <!-- Live Stream (on HOME too) -->
+      <!-- Live Stream (on HOME) — NO auto iframe, click to load -->
       <section>
         <div class="flex items-center justify-between mb-4">
-          <h2 class="font-display text-sm tracking-widest text-red-400 uppercase live-pulse">Live Streams</h2>
-          <button onclick="setView('multi')" class="text-[10px] text-gray-500 hover:text-cyan-400 tracking-wider cursor-pointer">OPEN 4-VIEW →</button>
+          <h2 class="font-display text-sm tracking-widest text-red-400 uppercase live-pulse">ถ่ายทอดสด</h2>
+          <button onclick="setView('multi')" class="text-[10px] text-gray-500 hover:text-cyan-400 tracking-wider cursor-pointer">เปิด 4 จอ →</button>
         </div>
         <div class="flex gap-2 mb-3 overflow-x-auto pb-2">
           <button onclick="switchStream('louis')" data-ch="louis" class="ch-tab flex items-center gap-2 px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm whitespace-nowrap transition-all hover:border-cyan-500/30">
-            <img src="assets/profiles/louis.png" class="w-7 h-7 rounded-full object-cover"><span>หลุยส์</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
+            <img src="assets/profiles/louis.png" class="w-7 h-7 rounded-full object-cover" loading="lazy"><span>หลุยส์</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
           </button>
           <button onclick="switchStream('job')" data-ch="job" class="ch-tab flex items-center gap-2 px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm whitespace-nowrap transition-all hover:border-cyan-500/30">
-            <img src="assets/profiles/job.png" class="w-7 h-7 rounded-full object-cover"><span>แปะ</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
+            <img src="assets/profiles/job.png" class="w-7 h-7 rounded-full object-cover" loading="lazy"><span>แปะ</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
           </button>
           <button onclick="switchStream('geng')" data-ch="geng" class="ch-tab flex items-center gap-2 px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm whitespace-nowrap transition-all hover:border-cyan-500/30">
-            <img src="assets/profiles/geng.png" class="w-7 h-7 rounded-full object-cover"><span>เจง</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
+            <img src="assets/profiles/geng.png" class="w-7 h-7 rounded-full object-cover" loading="lazy"><span>เจง</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
           </button>
           <button onclick="switchStream('kk')" data-ch="kk" class="ch-tab flex items-center gap-2 px-4 py-2 rounded-xl border border-dark-600/30 bg-dark-800/50 text-sm whitespace-nowrap transition-all hover:border-purple-500/30">
-            <img src="assets/profiles/kk.png" class="w-7 h-7 rounded-full object-cover"><span>เค</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-purple-500 live-pulse"></span>
+            <img src="assets/profiles/kk.png" class="w-7 h-7 rounded-full object-cover" loading="lazy"><span>เค</span><span class="live-dot-s hidden w-2 h-2 rounded-full bg-purple-500 live-pulse"></span>
           </button>
         </div>
         <div class="flex gap-3">
           <div class="flex-1 rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-900 glow-cyan aspect-video" id="home-stream">
             <div class="w-full h-full flex items-center justify-center">
-              <div class="text-center">
-                <img src="assets/logo.png" alt="Start 3ทุ่ม" class="w-16 h-16 rounded-full mx-auto mb-4 opacity-30">
-                <p class="text-gray-500 text-sm">Select a channel above</p>
-              </div>
+              <p class="text-gray-500 text-sm">กดเลือกช่องด้านบน</p>
             </div>
           </div>
           <div class="w-[340px] hidden lg:flex flex-col rounded-2xl overflow-hidden border border-dark-600/30 bg-dark-800/50 aspect-video" id="home-chat-wrap">
-            <!-- Chat channel selector -->
             <div class="flex items-center gap-1 px-2 py-1.5 border-b border-dark-600/20 overflow-x-auto">
-              <span class="text-[10px] text-gray-500 tracking-wider mr-1">CHAT:</span>
-              <button onclick="switchChat('louis')" data-chat="louis" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">หลุยส์</button>
-              <button onclick="switchChat('job')" data-chat="job" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">แปะ</button>
-              <button onclick="switchChat('geng')" data-chat="geng" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer">เจง</button>
-              <button onclick="switchChat('kk')" data-chat="kk" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-purple-400 transition-colors cursor-pointer">เค</button>
+              <span class="text-[10px] text-gray-500 tracking-wider mr-1">แชท:</span>
+              <button onclick="switchChat('louis')" data-chat="louis" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 cursor-pointer">หลุยส์</button>
+              <button onclick="switchChat('job')" data-chat="job" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 cursor-pointer">แปะ</button>
+              <button onclick="switchChat('geng')" data-chat="geng" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-cyan-400 cursor-pointer">เจง</button>
+              <button onclick="switchChat('kk')" data-chat="kk" class="chat-tab px-2 py-1 rounded text-[10px] text-gray-500 hover:text-purple-400 cursor-pointer">เค</button>
             </div>
-            <div class="flex-1" id="home-chat">
-              <div class="w-full h-full flex items-center justify-center">
-                <p class="text-gray-600 text-xs">Select chat channel above</p>
-              </div>
-            </div>
+            <div class="flex-1" id="home-chat"></div>
           </div>
         </div>
       </section>
 
-      <!-- Vote (PROMINENT) -->
-      <section class="relative">
-        <div class="text-center mb-6">
-          <h2 class="font-display text-2xl tracking-wide text-accent-orange glow-text-orange">VOTE NEXT GAME</h2>
-          <p class="text-gray-400 text-sm mt-1">เลือกเกมส์ที่อยากดูอาทิตย์หน้า — กดได้เลย!</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="vote-grid"></div>
-      </section>
-
-      <!-- Calendar Schedule -->
+      <!-- Calendar Schedule — ถัดจาก Live เลย -->
       <section>
-        <h2 class="font-display text-sm tracking-widest text-accent-green uppercase mb-4">Schedule</h2>
+        <h2 class="font-display text-sm tracking-widest text-accent-green uppercase mb-4">ตาราง</h2>
         <div class="bg-dark-800/50 rounded-2xl border border-dark-600/30 overflow-hidden backdrop-blur p-4">
           <div class="flex items-center justify-between mb-3">
             <button onclick="calPrev()" class="text-gray-500 hover:text-cyan-400 px-2 cursor-pointer">&lt;</button>
@@ -189,15 +172,42 @@
             <button onclick="calNext()" class="text-gray-500 hover:text-cyan-400 px-2 cursor-pointer">&gt;</button>
           </div>
           <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-gray-500 mb-2">
-            <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+            <span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span>
           </div>
           <div class="grid grid-cols-7 gap-1" id="cal-grid"></div>
         </div>
       </section>
 
-      <!-- Game Recommendations (expandable) -->
+      <!-- Vote — กดดู detail ไว -->
       <section>
-        <h2 class="font-display text-sm tracking-widest text-cyan-400 uppercase mb-4">Game Recommendations</h2>
+        <div class="text-center mb-6">
+          <h2 class="font-display text-2xl tracking-wide text-accent-orange glow-text-orange">โหวตเกมส์อาทิตย์หน้า</h2>
+          <p class="text-gray-400 text-sm mt-1">กดโหวต หรือกดดูรายละเอียดเกมส์ได้เลย!</p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="vote-grid"></div>
+        <!-- Detail popup -->
+        <div id="game-detail" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" onclick="if(event.target===this)closeDetail()">
+          <div class="bg-dark-800 rounded-2xl border border-dark-600/30 max-w-lg w-full overflow-hidden shadow-2xl">
+            <img id="detail-img" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <h3 id="detail-name" class="font-display text-xl text-white"></h3>
+              <p id="detail-desc" class="text-sm text-gray-300 mt-2 leading-relaxed"></p>
+              <div class="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                <span id="detail-players"></span>
+                <span id="detail-price"></span>
+              </div>
+              <div class="flex gap-2 mt-4">
+                <a id="detail-steam" target="_blank" class="flex-1 text-center py-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-sm hover:bg-cyan-500/30 cursor-pointer">ดูบน Steam</a>
+                <button onclick="closeDetail()" class="px-4 py-2 rounded-xl bg-dark-600 text-gray-400 text-sm hover:bg-dark-500 cursor-pointer">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- เกมส์แนะนำ (expandable) -->
+      <section>
+        <h2 class="font-display text-sm tracking-widest text-cyan-400 uppercase mb-4">เกมส์แนะนำ</h2>
         <div class="space-y-2" id="recommend-list"></div>
       </section>
     </main>
@@ -334,14 +344,14 @@ const CHANNELS = {
 };
 
 const GAMES = [
-  { id:'repo', name:'R.E.P.O.', price:'~350฿', players:'2-6', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1765552338', desc:'Comedy-horror physics madness', steam:'https://store.steampowered.com/app/3241660/REPO/' },
-  { id:'brawlmart', name:'BrawlMart', price:'~179฿', players:'2-4', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3467660/58efc5432016c6bef0adcce55c7c2436ad20f43f/header.jpg?t=1775048552', desc:'Shopping cart warfare', steam:'https://store.steampowered.com/app/3467660/BrawlMart/', tag:'NEW' },
-  { id:'2cooks', name:'2 Cooks 1 Mess', price:'FREE', players:'4+', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3644200/3bddd3af80c5cb2ada118a1a7251d49b00e1178f/header.jpg?t=1776238474', desc:'Online kitchen chaos', steam:'https://store.steampowered.com/app/3644200/2_Cooks_1_Mess/', tag:'FREE' },
-  { id:'wegottago', name:'We Gotta Go', price:'~176฿', players:'1-4', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3967470/3387eeb71a61ecb79ad07cfd5710ae28a2bdd1f8/header.jpg?t=1776344599', desc:'Haunted bathroom comedy', steam:'https://store.steampowered.com/app/3967470/We_Gotta_Go/', tag:'NEW' },
-  { id:'contentwarning', name:'Content Warning', price:'~280฿', players:'1-4', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2881650/header.jpg?t=1775640428', desc:'Film scary stuff for views', steam:'https://store.steampowered.com/app/2881650/Content_Warning/' },
-  { id:'pummel', name:'Pummel Party', price:'~525฿', players:'1-8', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/880940/header.jpg?t=1725311353', desc:'Mario Party but violent', steam:'https://store.steampowered.com/app/880940/Pummel_Party/' },
-  { id:'peak', name:'PEAK', price:'~280฿', players:'1-4', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3527290/31bac6b2eccf09b368f5e95ce510bae2baf3cfcd/header.jpg?t=1775581133', desc:'Climb together, fall together', steam:'https://store.steampowered.com/app/3527290/PEAK/' },
-  { id:'waddlewords', name:'Waddle Words', price:'~69฿', players:'1-4', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4204310/b94c1fbed90f2705f9709a23ea7d025fcd58c8ec/header.jpg?t=1775062388', desc:'Ducks spelling in chaos', steam:'https://store.steampowered.com/app/4204310/Waddle_Words/', tag:'NEW' },
+  { id:'repo', name:'R.E.P.O.', price:'~350฿', players:'2-6 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1765552338', desc:'ล่าผี ฟิสิกส์บ้า', detail:'เกม co-op comedy-horror เข้าไปเก็บของในบ้านผี ของกระเด็นทั่ว ฟิสิกส์บ้าๆบอๆ โดนผีไล่แล้วกรี๊ดกัน 96% positive บน Steam สนุกมาก', steam:'https://store.steampowered.com/app/3241660/REPO/' },
+  { id:'brawlmart', name:'BrawlMart', price:'~179฿', players:'2-4 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3467660/58efc5432016c6bef0adcce55c7c2436ad20f43f/header.jpg?t=1775048552', desc:'รถเข็นชนกัน', detail:'ขับรถเข็นซุปเปอร์มาร์เก็ตชนกัน มี mini-game ทุกรอบเปลี่ยนกฎ ปั่นสุดๆ spec ต่ำมาก เกมใหม่ เม.ย. 2026', steam:'https://store.steampowered.com/app/3467660/BrawlMart/', tag:'ใหม่' },
+  { id:'2cooks', name:'2 Cooks 1 Mess', price:'ฟรี!', players:'4+ คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3644200/3bddd3af80c5cb2ada118a1a7251d49b00e1178f/header.jpg?t=1776238474', desc:'ครัววุ่นวาย', detail:'เกมทำอาหาร online แบบ Overcooked ทำอาหาร เสิร์ฟ ล้างจาน พร้อมกันหมด วุ่นวายมาก ฟรี! spec ต่ำสุด', steam:'https://store.steampowered.com/app/3644200/2_Cooks_1_Mess/', tag:'ฟรี' },
+  { id:'wegottago', name:'We Gotta Go', price:'~176฿', players:'1-4 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3967470/3387eeb71a61ecb79ad07cfd5710ae28a2bdd1f8/header.jpg?t=1776344599', desc:'หาห้องน้ำในบ้านผี', detail:'co-op horror comedy แข่งหาห้องน้ำในบ้านผี ก่อนท้องจะระเบิด เก็บไอเทม ไล่ผี ตลกมากๆ เหมาะ stream สุดๆ', steam:'https://store.steampowered.com/app/3967470/We_Gotta_Go/', tag:'ใหม่' },
+  { id:'contentwarning', name:'Content Warning', price:'~280฿', players:'1-4 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2881650/header.jpg?t=1775640428', desc:'ถ่ายคลิปในดันมืด', detail:'เข้าไปถ่ายคลิปในดันมืดๆ ยิ่งน่ากลัวยิ่งได้ view เหมาะ stream มาก meta-humor เล่นไป กรี๊ดไป', steam:'https://store.steampowered.com/app/2881650/Content_Warning/' },
+  { id:'pummel', name:'Pummel Party', price:'~525฿', players:'1-8 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/880940/header.jpg?t=1725311353', desc:'Mario Party แต่รุนแรง', detail:'Mario Party เวอร์ชัน PC มี mini-game เยอะมาก ตีกัน แข่งกัน ทะเลาะกัน รองรับ 8 คน เล่นได้ทั้งคืน', steam:'https://store.steampowered.com/app/880940/Pummel_Party/' },
+  { id:'peak', name:'PEAK', price:'~280฿', players:'1-4 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3527290/31bac6b2eccf09b368f5e95ce510bae2baf3cfcd/header.jpg?t=1775581133', desc:'ปีนเขา ตก กรี๊ด', detail:'co-op ปีนเขาครบ 4 คน ปีนด้วยกัน ตกด้วยกัน กรี๊ดด้วยกัน Steam Award 2025 ขายไป 10 ล้านชุด', steam:'https://store.steampowered.com/app/3527290/PEAK/' },
+  { id:'waddlewords', name:'Waddle Words', price:'~69฿', players:'1-4 คน', img:'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4204310/b94c1fbed90f2705f9709a23ea7d025fcd58c8ec/header.jpg?t=1775062388', desc:'เป็ดสะกดคำ ปั่นมาก', detail:'เป็ดสะกดคำแข่งกัน เดินไปเดินมา ปั่นมาก ราคาถูก 69 บาท spec ต่ำสุดๆ เกมใหม่', steam:'https://store.steampowered.com/app/4204310/Waddle_Words/', tag:'ใหม่' },
 ];
 
 const SCHEDULE = [
@@ -517,25 +527,38 @@ function saveVotes(v) { localStorage.setItem('s3t_votes', JSON.stringify(v)); }
 function hasVoted() { return localStorage.getItem('s3t_voted')==='true'; }
 function vote(id) { if(hasVoted()) return; const v=getVotes(); v[id]=(v[id]||0)+1; saveVotes(v); localStorage.setItem('s3t_voted','true'); renderVotes(); }
 
-// Vote — prominent cards
+// Vote — compact cards with detail popup
 function renderVotes() {
   const votes=getVotes(), voted=hasVoted(), total=Object.values(votes).reduce((a,b)=>a+b,0);
-  const sorted = [...GAMES].sort((a,b) => (votes[b.id]||0) - (votes[a.id]||0));
-  document.getElementById('vote-grid').innerHTML = sorted.map((g,i) => {
+  document.getElementById('vote-grid').innerHTML = GAMES.map((g,i) => {
     const c=votes[g.id]||0, pct=total>0?Math.round(c/total*100):0;
-    const isTop = voted && i === 0 && c > 0;
-    const tc = g.tag==='FREE'?'bg-accent-green/20 text-accent-green':g.tag==='NEW'?'bg-cyan-500/20 text-cyan-400':'';
-    return `<div class="bg-dark-800/50 rounded-2xl border ${isTop?'border-accent-orange/40 glow-cyan':'border-dark-600/30'} overflow-hidden card-hover backdrop-blur">
-      <div class="relative"><img src="${g.img}" alt="${g.name}" class="w-full h-40 object-cover" loading="lazy" onerror="this.parentElement.style.display='none'">
-      ${g.tag?`<span class="absolute top-2 right-2 text-[10px] font-bold tracking-wider px-2 py-0.5 rounded ${tc}">${g.tag}</span>`:''}
-      ${isTop?'<span class="absolute top-2 left-2 text-xs bg-accent-orange text-white px-2 py-0.5 rounded font-bold">TOP</span>':''}</div>
-      <div class="p-4"><a href="${g.steam}" target="_blank" class="font-display text-base tracking-wide hover:text-cyan-400 transition-colors">${g.name}</a>
-      <p class="text-xs text-gray-500 mt-1">${g.desc}</p>
-      <p class="text-[10px] text-gray-600 mt-1">${g.players} players · ${g.price}</p>
-      <button onclick="vote('${g.id}')" class="vote-btn w-full mt-3 py-2.5 rounded-xl text-sm font-bold tracking-wider ${voted?'bg-dark-700 text-gray-500 cursor-default':'bg-gradient-to-r from-cyan-500/20 to-accent-orange/20 text-white hover:from-cyan-500/30 hover:to-accent-orange/30 border border-cyan-500/20'}" ${voted?'disabled':''}>${voted?`${c} VOTES (${pct}%)`:'VOTE'}</button>
-      ${voted&&total>0?`<div class="mt-2 bg-dark-900 rounded-full h-1.5 overflow-hidden"><div class="vote-bar ${isTop?'bg-accent-orange':'bg-cyan-500/60'} h-full rounded-full" style="width:${pct}%"></div></div>`:''}</div></div>`;
+    const tc = g.tag==='ฟรี'?'bg-accent-green/20 text-accent-green':g.tag?'bg-cyan-500/20 text-cyan-400':'';
+    return `<div class="bg-dark-800/50 rounded-xl border border-dark-600/30 overflow-hidden backdrop-blur group">
+      <div class="relative cursor-pointer" onclick="showDetail('${g.id}')">
+        <img src="${g.img}" alt="${g.name}" class="w-full h-28 object-cover" loading="lazy" onerror="this.style.display='none'">
+        ${g.tag?`<span class="absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded ${tc}">${g.tag}</span>`:''}
+        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-xs text-white bg-dark-800/80 px-3 py-1 rounded-full">ดูรายละเอียด</span></div>
+      </div>
+      <div class="p-3">
+        <p class="text-sm font-medium truncate">${g.name}</p>
+        <p class="text-[10px] text-gray-500 truncate">${g.desc}</p>
+        <button onclick="event.stopPropagation();vote('${g.id}')" class="vote-btn w-full mt-2 py-2 rounded-lg text-xs font-bold tracking-wider ${voted?'bg-dark-700 text-gray-500 cursor-default':'bg-gradient-to-r from-cyan-500/20 to-accent-orange/20 text-white hover:from-cyan-500/30 hover:to-accent-orange/30 border border-cyan-500/20'}" ${voted?'disabled':''}>${voted?`${c} โหวต (${pct}%)`:'โหวต'}</button>
+        ${voted&&total>0?`<div class="mt-1.5 bg-dark-900 rounded-full h-1 overflow-hidden"><div class="vote-bar bg-cyan-500/60 h-full rounded-full" style="width:${pct}%"></div></div>`:''}</div></div>`;
   }).join('');
 }
+
+function showDetail(id) {
+  const g = GAMES.find(x=>x.id===id); if(!g) return;
+  document.getElementById('detail-img').src = g.img;
+  document.getElementById('detail-name').textContent = g.name;
+  document.getElementById('detail-desc').textContent = g.detail || g.desc;
+  document.getElementById('detail-players').textContent = g.players;
+  document.getElementById('detail-price').textContent = g.price;
+  document.getElementById('detail-steam').href = g.steam;
+  document.getElementById('game-detail').classList.remove('hidden');
+  document.getElementById('game-detail').style.background = 'rgba(0,0,0,0.7)';
+}
+function closeDetail() { document.getElementById('game-detail').classList.add('hidden'); }
 
 // Calendar Schedule
 let calDate = new Date();
