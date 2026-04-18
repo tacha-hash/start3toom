@@ -384,7 +384,7 @@ function updateCountdown() {
 // === LIVE STREAMS ===
 // Channel config — update videoId/streamId when going live
 const CHANNELS = {
-  louis: { name: 'หลุยส์', platform: 'youtube', channelId: '', videoId: 'b61eBbhIRSQ', handle: 'saytanaa', color: 'cyan' },
+  louis: { name: 'หลุยส์', platform: 'youtube', channelId: '', videoId: '', handle: 'saytanaa', color: 'cyan' },
   job:   { name: 'แปะ',   platform: 'youtube', channelId: '', videoId: '', color: 'cyan' },
   geng:  { name: 'เจง',   platform: 'youtube', channelId: '', videoId: '', color: 'cyan' },
   kk:    { name: 'เค',    platform: 'twitch',  twitchUser: 'thiskk', videoId: '', color: 'purple' },
@@ -468,36 +468,52 @@ function setOffline(channelKey) {
   }
 }
 
-// === AUTO LIVE CHECK ===
-// Twitch: always enable — embed shows live/offline automatically
-CHANNELS.kk.videoId = 'auto';
+// === AUTO LIVE CHECK via webhook-relay API ===
+const LIVE_API = 'https://webhook-relay.louracle.workers.dev/api/live';
+const LIVE_POLL_INTERVAL = 30000; // 30 seconds
 
-// YouTube: check /live page for each channel
-async function checkYouTubeLive() {
-  const ytChannels = {
-    louis: 'saytanaa',
-    job: 'j3chachannel',
-    geng: 'GenghisKhanz'
-  };
-  for (const [key, handle] of Object.entries(ytChannels)) {
-    try {
-      // Use oembed to get video info from /live URL
-      const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/@${handle}/live&format=json`);
-      if (res.ok) {
-        const data = await res.json();
-        // Extract video ID from thumbnail URL as fallback
-        const thumbMatch = data.thumbnail_url?.match(/\/vi\/([^/]+)\//);
-        if (thumbMatch) {
-          // Store channel handle for embed URL
-          CHANNELS[key].handle = handle;
-          CHANNELS[key].latestVideoId = thumbMatch[1];
-        }
+async function checkLiveStatus() {
+  try {
+    const res = await fetch(LIVE_API);
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    for (const [key, info] of Object.entries(data.channels || {})) {
+      if (!CHANNELS[key]) continue;
+      if (info.live && info.videoId) {
+        CHANNELS[key].videoId = info.videoId;
+        const dot = document.querySelector(`[data-channel="${key}"] .live-dot`);
+        if (dot) dot.classList.remove('hidden');
+      } else {
+        CHANNELS[key].videoId = '';
+        const dot = document.querySelector(`[data-channel="${key}"] .live-dot`);
+        if (dot) dot.classList.add('hidden');
       }
-    } catch {}
+      CHANNELS[key].handle = info.handle || CHANNELS[key].handle;
+    }
+    // Auto-switch to first live channel if nothing playing
+    if (!activeStream || !CHANNELS[activeStream]?.videoId) {
+      const firstLive = Object.keys(CHANNELS).find(k => CHANNELS[k].videoId);
+      if (firstLive) switchStream(firstLive);
+    }
+    // Update live badge in header
+    const anyLive = data.anyLive || Object.values(CHANNELS).some(c => c.videoId);
+    document.getElementById('live-badge').classList.toggle('hidden', !anyLive);
+  } catch {
+    // API not ready yet — Twitch always works via embed
+    CHANNELS.kk.videoId = 'auto';
   }
 }
 
-// Override switchStream to handle Twitch auto-embed
+// Poll live status
+checkLiveStatus();
+setInterval(checkLiveStatus, LIVE_POLL_INTERVAL);
+
+// Set channel handles for fallback
+CHANNELS.louis.handle = 'saytanaa';
+CHANNELS.job.handle = 'j3chachannel';
+CHANNELS.geng.handle = 'GenghisKhanz';
+
+// Override switchStream to handle both platforms
 const _origSwitch = switchStream;
 switchStream = function(channelKey) {
   const ch = CHANNELS[channelKey];
