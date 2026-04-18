@@ -5,302 +5,324 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Start 3ทุ่ม — Game Night</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Russo+One&family=Noto+Sans+Thai:wght@300;400;500;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { kanit: ['Kanit', 'sans-serif'] },
+          fontFamily: {
+            display: ['Russo One', 'sans-serif'],
+            body: ['Chakra Petch', 'sans-serif'],
+            thai: ['Noto Sans Thai', 'Chakra Petch', 'sans-serif']
+          },
           colors: {
-            dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a2e', 600: '#252540' },
-            neon: { purple: '#a855f7', blue: '#3b82f6', pink: '#ec4899', green: '#10b981', yellow: '#f59e0b' }
+            dark: { 950: '#050508', 900: '#0a0a0f', 800: '#0f1018', 700: '#161622', 600: '#1e1e32' },
+            cyan: { 400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2', glow: '#00BFA5' },
+            accent: { orange: '#F97316', red: '#ef4444', green: '#10b981' }
           }
         }
       }
     }
   </script>
   <style>
-    body { font-family: 'Kanit', sans-serif; }
-    .glow { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
-    .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-    .card-hover { transition: transform 0.2s, box-shadow 0.3s; }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); }
-    .vote-btn { transition: all 0.2s; }
+    body { font-family: 'Chakra Petch', 'Noto Sans Thai', sans-serif; background: #050508; }
+    .font-display { font-family: 'Russo One', sans-serif; }
+
+    /* Neon glow effects matching logo cyan */
+    .glow-cyan { box-shadow: 0 0 30px rgba(0, 191, 165, 0.25), 0 0 60px rgba(0, 191, 165, 0.1); }
+    .glow-cyan-sm { box-shadow: 0 0 15px rgba(0, 191, 165, 0.2); }
+    .glow-text { text-shadow: 0 0 10px rgba(0, 191, 165, 0.5), 0 0 40px rgba(0, 191, 165, 0.2); }
+    .glow-text-orange { text-shadow: 0 0 10px rgba(249, 115, 22, 0.5), 0 0 40px rgba(249, 115, 22, 0.2); }
+
+    /* CRT scanline overlay */
+    .scanlines::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Card interactions */
+    .card-hover { transition: transform 0.2s ease-out, box-shadow 0.3s ease-out; cursor: pointer; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 0 30px rgba(0, 191, 165, 0.3); }
+    .card-hover:active { transform: scale(0.98); }
+
+    .vote-btn { transition: all 0.15s ease-out; cursor: pointer; }
     .vote-btn:active { transform: scale(0.95); }
-    .live-pulse { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .gradient-text { background: linear-gradient(135deg, #a855f7, #3b82f6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* Live pulse */
+    .live-pulse { animation: livePulse 2s ease-in-out infinite; }
+    @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* Hero gradient */
+    .hero-gradient {
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,191,165,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 50%, rgba(6,182,212,0.06) 0%, transparent 50%);
+    }
+
+    /* Profile ring */
+    .profile-ring {
+      border: 2px solid rgba(0, 191, 165, 0.4);
+      box-shadow: 0 0 12px rgba(0, 191, 165, 0.2);
+      transition: all 0.2s;
+    }
+    .profile-ring:hover {
+      border-color: rgba(0, 191, 165, 0.8);
+      box-shadow: 0 0 20px rgba(0, 191, 165, 0.4);
+    }
+
+    /* Vote bar animation */
+    .vote-bar { transition: width 0.6s ease-out; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .card-hover { transition: none; }
+      .card-hover:hover { transform: none; }
+      .live-pulse { animation: none; }
+      .vote-bar { transition: none; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #1e1e32; border-radius: 3px; }
   </style>
 </head>
-<body class="bg-dark-900 text-white min-h-screen">
+<body class="text-gray-100 min-h-screen">
 
   <!-- Header -->
-  <header class="border-b border-dark-600 bg-dark-800/80 backdrop-blur-sm sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+  <header class="border-b border-dark-600/50 bg-dark-900/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">🎮</span>
+        <img src="assets/logo.png" alt="Start 3ทุ่ม" class="w-10 h-10 rounded-full profile-ring">
         <div>
-          <h1 class="text-xl font-bold gradient-text">Start 3ทุ่ม</h1>
-          <p class="text-xs text-gray-400">Game Night ทุกวันอาทิตย์ 21:00</p>
+          <h1 class="font-display text-lg tracking-wide text-cyan-400 glow-text">START 3ทุ่ม</h1>
+          <p class="text-[10px] text-gray-500 tracking-widest uppercase font-body">Game Night Every Sunday 21:00</p>
         </div>
       </div>
-      <div id="live-badge" class="hidden bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full live-pulse">
-        🔴 LIVE
+      <div id="live-badge" class="hidden bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full live-pulse tracking-wider">
+        LIVE
       </div>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 py-8 space-y-10">
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-12">
 
-    <!-- Next Session -->
-    <section>
-      <h2 class="text-lg font-semibold text-neon-purple mb-4 flex items-center gap-2">
-        <span>📅</span> เกมส์อาทิตย์นี้
-      </h2>
-      <div class="bg-dark-700 rounded-2xl p-6 glow border border-dark-600">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div class="text-2xl font-bold" id="next-game-title">PEAK (ปีนเขา) 🏔️</div>
-            <div class="text-gray-400 mt-1" id="next-game-date">อาทิตย์ 19 เม.ย. 2026 — 21:00</div>
-            <div class="text-gray-500 text-sm mt-2" id="next-game-desc">Co-op ปีนเขาครบ 4 คน กรี๊ดกันสนุก</div>
+    <!-- Hero: Next Session -->
+    <section class="relative hero-gradient rounded-3xl overflow-hidden scanlines">
+      <div class="relative z-10 p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div class="flex-1">
+            <p class="text-xs text-cyan-500 tracking-widest uppercase mb-2 font-display">Next Game Night</p>
+            <h2 class="text-3xl sm:text-4xl font-display tracking-wide text-white glow-text" id="next-game-title">PEAK</h2>
+            <p class="text-gray-400 mt-1 text-sm" id="next-game-date">Sunday 19 Apr 2026 — 21:00</p>
+            <p class="text-gray-500 text-xs mt-2" id="next-game-desc">Co-op climbing chaos — 4 players screaming together</p>
           </div>
-          <div id="countdown" class="text-center bg-dark-800 rounded-xl px-6 py-4 border border-dark-600">
-            <div class="text-xs text-gray-400 mb-1">เริ่มใน</div>
-            <div class="text-2xl font-bold text-neon-blue" id="countdown-timer">--:--:--</div>
+          <div class="text-center bg-dark-800/80 backdrop-blur rounded-2xl px-8 py-5 border border-dark-600/50 glow-cyan-sm">
+            <p class="text-[10px] text-gray-500 tracking-widest uppercase mb-1">Starts In</p>
+            <div class="text-3xl font-display text-cyan-400 glow-text tabular-nums" id="countdown-timer">--:--:--</div>
           </div>
         </div>
 
-        <!-- Crew -->
-        <div class="mt-6 flex flex-wrap gap-3">
-          <div class="flex items-center gap-2 bg-dark-800 rounded-full px-4 py-2 border border-dark-600">
-            <span class="w-2 h-2 rounded-full bg-neon-green"></span>
-            <span class="text-sm">หลุยส์</span>
-            <a href="https://youtube.com/@saytanaa" target="_blank" class="text-xs text-gray-500 hover:text-neon-purple">YT</a>
-          </div>
-          <div class="flex items-center gap-2 bg-dark-800 rounded-full px-4 py-2 border border-dark-600">
-            <span class="w-2 h-2 rounded-full bg-neon-green"></span>
-            <span class="text-sm">แปะ (จ๊อบ)</span>
-            <a href="https://youtube.com/@j3chachannel" target="_blank" class="text-xs text-gray-500 hover:text-neon-purple">YT</a>
-          </div>
-          <div class="flex items-center gap-2 bg-dark-800 rounded-full px-4 py-2 border border-dark-600">
-            <span class="w-2 h-2 rounded-full bg-neon-green"></span>
-            <span class="text-sm">เจง</span>
-            <a href="https://youtube.com/@GenghisKhanz" target="_blank" class="text-xs text-gray-500 hover:text-neon-purple">YT</a>
-          </div>
-          <div class="flex items-center gap-2 bg-dark-800 rounded-full px-4 py-2 border border-dark-600">
-            <span class="w-2 h-2 rounded-full bg-neon-purple"></span>
-            <span class="text-sm">เค (THISKK)</span>
-            <a href="https://twitch.tv/thiskk" target="_blank" class="text-xs text-gray-500 hover:text-neon-purple">TW</a>
-          </div>
+        <!-- Crew with real photos -->
+        <div class="mt-8 flex flex-wrap gap-4 sm:gap-6">
+          <a href="https://youtube.com/@saytanaa" target="_blank" class="flex items-center gap-3 group">
+            <img src="assets/profiles/louis.png" alt="หลุยส์" class="w-12 h-12 rounded-full object-cover profile-ring">
+            <div>
+              <p class="text-sm font-medium group-hover:text-cyan-400 transition-colors">หลุยส์</p>
+              <p class="text-[10px] text-gray-500">@saytanaa</p>
+            </div>
+          </a>
+          <a href="https://youtube.com/@j3chachannel" target="_blank" class="flex items-center gap-3 group">
+            <img src="assets/profiles/job.png" alt="แปะ" class="w-12 h-12 rounded-full object-cover profile-ring">
+            <div>
+              <p class="text-sm font-medium group-hover:text-cyan-400 transition-colors">แปะ</p>
+              <p class="text-[10px] text-gray-500">@j3chachannel</p>
+            </div>
+          </a>
+          <a href="https://youtube.com/@GenghisKhanz" target="_blank" class="flex items-center gap-3 group">
+            <img src="assets/profiles/geng.png" alt="เจง" class="w-12 h-12 rounded-full object-cover profile-ring">
+            <div>
+              <p class="text-sm font-medium group-hover:text-cyan-400 transition-colors">เจง</p>
+              <p class="text-[10px] text-gray-500">@GenghisKhanz</p>
+            </div>
+          </a>
+          <a href="https://twitch.tv/thiskk" target="_blank" class="flex items-center gap-3 group">
+            <img src="assets/profiles/kk.png" alt="เค" class="w-12 h-12 rounded-full object-cover profile-ring">
+            <div>
+              <p class="text-sm font-medium group-hover:text-purple-400 transition-colors">เค</p>
+              <p class="text-[10px] text-gray-500">@thiskk <span class="text-purple-400">TW</span></p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Thumbnails Gallery -->
+    <section>
+      <h2 class="font-display text-sm tracking-widest text-cyan-500 uppercase mb-4">Previous Episodes</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="rounded-xl overflow-hidden card-hover border border-dark-600/30">
+          <img src="assets/thumbnails/1.png" alt="Episode" class="w-full aspect-video object-cover">
+        </div>
+        <div class="rounded-xl overflow-hidden card-hover border border-dark-600/30">
+          <img src="assets/thumbnails/2.png" alt="Episode" class="w-full aspect-video object-cover">
+        </div>
+        <div class="rounded-xl overflow-hidden card-hover border border-dark-600/30">
+          <img src="assets/thumbnails/3.png" alt="Episode" class="w-full aspect-video object-cover">
         </div>
       </div>
     </section>
 
     <!-- Vote -->
     <section>
-      <h2 class="text-lg font-semibold text-neon-blue mb-4 flex items-center gap-2">
-        <span>🗳️</span> Vote เกมส์อาทิตย์หน้า
-      </h2>
-      <p class="text-gray-400 text-sm mb-4">เลือกเกมส์ที่อยากดู — กดได้เลย!</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="vote-grid">
-        <!-- Populated by JS -->
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-display text-sm tracking-widest text-accent-orange uppercase glow-text-orange">Vote Next Game</h2>
+        <span class="text-[10px] text-gray-600 tracking-wider">CHOOSE ONE</span>
       </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="vote-grid"></div>
     </section>
 
     <!-- Schedule -->
     <section>
-      <h2 class="text-lg font-semibold text-neon-green mb-4 flex items-center gap-2">
-        <span>📆</span> ตาราง On Air
-      </h2>
-      <div class="bg-dark-700 rounded-2xl border border-dark-600 overflow-hidden">
+      <h2 class="font-display text-sm tracking-widest text-accent-green uppercase mb-4">Schedule</h2>
+      <div class="bg-dark-800/50 rounded-2xl border border-dark-600/30 overflow-hidden backdrop-blur">
         <table class="w-full text-sm">
-          <thead class="bg-dark-800 text-gray-400">
-            <tr>
-              <th class="px-4 py-3 text-left">วันที่</th>
-              <th class="px-4 py-3 text-left">เกมส์</th>
-              <th class="px-4 py-3 text-left">สถานะ</th>
+          <thead>
+            <tr class="border-b border-dark-600/30">
+              <th class="px-5 py-3 text-left text-[10px] tracking-widest text-gray-500 uppercase">Date</th>
+              <th class="px-5 py-3 text-left text-[10px] tracking-widest text-gray-500 uppercase">Game</th>
+              <th class="px-5 py-3 text-left text-[10px] tracking-widest text-gray-500 uppercase">Status</th>
             </tr>
           </thead>
-          <tbody id="schedule-body" class="divide-y divide-dark-600">
-            <!-- Populated by JS -->
-          </tbody>
+          <tbody id="schedule-body" class="divide-y divide-dark-600/20"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- Recommended Games -->
+    <!-- Recommended -->
     <section>
-      <h2 class="text-lg font-semibold text-neon-pink mb-4 flex items-center gap-2">
-        <span>🕹️</span> เกมส์แนะนำ
-      </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="recommend-grid">
-        <!-- Populated by JS -->
-      </div>
-    </section>
-
-    <!-- Channels -->
-    <section>
-      <h2 class="text-lg font-semibold text-neon-yellow mb-4 flex items-center gap-2">
-        <span>📺</span> ช่องของพวกเรา
-      </h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <a href="https://youtube.com/@saytanaa" target="_blank" class="bg-dark-700 rounded-xl p-4 border border-dark-600 card-hover text-center">
-          <div class="text-2xl mb-2">🎬</div>
-          <div class="font-medium">หลุยส์</div>
-          <div class="text-xs text-gray-400">@saytanaa</div>
-        </a>
-        <a href="https://youtube.com/@j3chachannel" target="_blank" class="bg-dark-700 rounded-xl p-4 border border-dark-600 card-hover text-center">
-          <div class="text-2xl mb-2">🎬</div>
-          <div class="font-medium">แปะ</div>
-          <div class="text-xs text-gray-400">@j3chachannel</div>
-        </a>
-        <a href="https://youtube.com/@GenghisKhanz" target="_blank" class="bg-dark-700 rounded-xl p-4 border border-dark-600 card-hover text-center">
-          <div class="text-2xl mb-2">🎬</div>
-          <div class="font-medium">เจง</div>
-          <div class="text-xs text-gray-400">@GenghisKhanz</div>
-        </a>
-        <a href="https://twitch.tv/thiskk" target="_blank" class="bg-dark-700 rounded-xl p-4 border border-dark-600 card-hover text-center">
-          <div class="text-2xl mb-2">📡</div>
-          <div class="font-medium">เค</div>
-          <div class="text-xs text-gray-400">@thiskk</div>
-        </a>
-      </div>
+      <h2 class="font-display text-sm tracking-widest text-cyan-400 uppercase mb-4">New Releases</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="recommend-grid"></div>
     </section>
 
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-dark-600 mt-16 py-6 text-center text-gray-500 text-xs">
-    Start 3ทุ่ม — Game Night ทุกอาทิตย์ 21:00 🎮
+  <footer class="border-t border-dark-600/20 mt-20 py-8">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="Start 3ทุ่ม" class="w-6 h-6 rounded-full opacity-50">
+        <span class="text-xs text-gray-600 tracking-wider">Start 3ทุ่ม — Game Night Every Sunday</span>
+      </div>
+      <div class="flex gap-4">
+        <a href="https://youtube.com/@saytanaa" target="_blank" class="text-xs text-gray-600 hover:text-cyan-400 transition-colors">YouTube</a>
+        <a href="https://twitch.tv/thiskk" target="_blank" class="text-xs text-gray-600 hover:text-purple-400 transition-colors">Twitch</a>
+      </div>
+    </div>
   </footer>
 
 <script>
-// === DATA ===
 const NEXT_SESSION = {
   date: new Date('2026-04-19T21:00:00+07:00'),
-  game: 'PEAK (ปีนเขา) 🏔️',
-  desc: 'Co-op ปีนเขาครบ 4 คน กรี๊ดกันสนุก'
+  game: 'PEAK',
+  desc: 'Co-op climbing chaos — 4 players screaming together'
 };
 
 const GAMES = [
-  { id: 'repo', name: 'R.E.P.O.', price: '~350฿', players: '2-6', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1765552338', desc: 'Comedy-horror ฟิสิกส์บ้า เก็บของในบ้านผี', steam: 'https://store.steampowered.com/app/3241660/REPO/' },
-  { id: 'brawlmart', name: 'BrawlMart', price: '~179฿', players: '2-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3467660/58efc5432016c6bef0adcce55c7c2436ad20f43f/header.jpg?t=1775048552', desc: 'รถเข็นชนกัน mini-game ปั่นสุดๆ', steam: 'https://store.steampowered.com/app/3467660/BrawlMart/', tag: '🆕' },
-  { id: '2cooks', name: '2 Cooks 1 Mess', price: 'ฟรี!', players: '4+', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3644200/3bddd3af80c5cb2ada118a1a7251d49b00e1178f/header.jpg?t=1776238474', desc: 'Overcooked online ครัววุ่นวาย', steam: 'https://store.steampowered.com/app/3644200/2_Cooks_1_Mess/', tag: '🆓' },
-  { id: 'wegottago', name: 'We Gotta Go', price: '~176฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3967470/3387eeb71a61ecb79ad07cfd5710ae28a2bdd1f8/header.jpg?t=1776344599', desc: 'หาห้องน้ำในบ้านผี comedy-horror', steam: 'https://store.steampowered.com/app/3967470/We_Gotta_Go/', tag: '🆕' },
-  { id: 'contentwarning', name: 'Content Warning', price: '~280฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2881650/header.jpg?t=1775640428', desc: 'ถ่ายคลิปในดันมืด ยิ่งกลัวยิ่งได้ view', steam: 'https://store.steampowered.com/app/2881650/Content_Warning/' },
-  { id: 'pummel', name: 'Pummel Party', price: '~525฿', players: '1-8', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/880940/header.jpg?t=1725311353', desc: 'Mario Party PC mini-game เยอะ', steam: 'https://store.steampowered.com/app/880940/Pummel_Party/' },
-  { id: 'peak', name: 'PEAK', price: '~280฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3527290/31bac6b2eccf09b368f5e95ce510bae2baf3cfcd/header.jpg?t=1775581133', desc: 'ปีนเขา co-op ตกกรี๊ด Steam Award 2025', steam: 'https://store.steampowered.com/app/3527290/PEAK/' },
-  { id: 'waddlewords', name: 'Waddle Words', price: '~69฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4204310/b94c1fbed90f2705f9709a23ea7d025fcd58c8ec/header.jpg?t=1775062388', desc: 'เป็ดสะกดคำ ปั่นมาก', steam: 'https://store.steampowered.com/app/4204310/Waddle_Words/', tag: '🆕' },
+  { id: 'repo', name: 'R.E.P.O.', price: '~350฿', players: '2-6', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1765552338', desc: 'Comedy-horror physics madness', steam: 'https://store.steampowered.com/app/3241660/REPO/' },
+  { id: 'brawlmart', name: 'BrawlMart', price: '~179฿', players: '2-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3467660/58efc5432016c6bef0adcce55c7c2436ad20f43f/header.jpg?t=1775048552', desc: 'Shopping cart warfare mini-games', steam: 'https://store.steampowered.com/app/3467660/BrawlMart/', tag: 'NEW' },
+  { id: '2cooks', name: '2 Cooks 1 Mess', price: 'FREE', players: '4+', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3644200/3bddd3af80c5cb2ada118a1a7251d49b00e1178f/header.jpg?t=1776238474', desc: 'Online kitchen chaos', steam: 'https://store.steampowered.com/app/3644200/2_Cooks_1_Mess/', tag: 'FREE' },
+  { id: 'wegottago', name: 'We Gotta Go', price: '~176฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3967470/3387eeb71a61ecb79ad07cfd5710ae28a2bdd1f8/header.jpg?t=1776344599', desc: 'Haunted bathroom comedy-horror', steam: 'https://store.steampowered.com/app/3967470/We_Gotta_Go/', tag: 'NEW' },
+  { id: 'contentwarning', name: 'Content Warning', price: '~280฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2881650/header.jpg?t=1775640428', desc: 'Film scary content for views', steam: 'https://store.steampowered.com/app/2881650/Content_Warning/' },
+  { id: 'pummel', name: 'Pummel Party', price: '~525฿', players: '1-8', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/880940/header.jpg?t=1725311353', desc: 'Mario Party but violent', steam: 'https://store.steampowered.com/app/880940/Pummel_Party/' },
+  { id: 'peak', name: 'PEAK', price: '~280฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3527290/31bac6b2eccf09b368f5e95ce510bae2baf3cfcd/header.jpg?t=1775581133', desc: 'Climb together, fall together', steam: 'https://store.steampowered.com/app/3527290/PEAK/' },
+  { id: 'waddlewords', name: 'Waddle Words', price: '~69฿', players: '1-4', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4204310/b94c1fbed90f2705f9709a23ea7d025fcd58c8ec/header.jpg?t=1775062388', desc: 'Ducks spelling words in chaos', steam: 'https://store.steampowered.com/app/4204310/Waddle_Words/', tag: 'NEW' },
 ];
 
 const SCHEDULE = [
-  { date: '19 เม.ย.', game: 'PEAK (ปีนเขา) 🏔️', status: 'upcoming' },
-  { date: '26 เม.ย.', game: 'TBD — รอ vote', status: 'vote' },
-  { date: '3 พ.ค.', game: 'TBD — รอ vote', status: 'vote' },
-  { date: '12 เม.ย.', game: 'งดเล่น (คนไม่พอ)', status: 'cancelled' },
-  { date: '5 เม.ย.', game: 'RO ดัน + ปีนเขา', status: 'done' },
+  { date: '19 เม.ย.', game: 'PEAK', status: 'upcoming' },
+  { date: '26 เม.ย.', game: 'TBD', status: 'vote' },
+  { date: '3 พ.ค.', game: 'TBD', status: 'vote' },
+  { date: '12 เม.ย.', game: 'Cancelled', status: 'cancelled' },
+  { date: '5 เม.ย.', game: 'RO + PEAK', status: 'done' },
 ];
 
-// === VOTES ===
-function getVotes() {
-  try { return JSON.parse(localStorage.getItem('s3t_votes') || '{}'); } catch { return {}; }
-}
-function saveVotes(votes) { localStorage.setItem('s3t_votes', JSON.stringify(votes)); }
+// Votes
+function getVotes() { try { return JSON.parse(localStorage.getItem('s3t_votes') || '{}'); } catch { return {}; } }
+function saveVotes(v) { localStorage.setItem('s3t_votes', JSON.stringify(v)); }
 function hasVoted() { return localStorage.getItem('s3t_voted') === 'true'; }
-
-function vote(gameId) {
+function vote(id) {
   if (hasVoted()) return;
-  const votes = getVotes();
-  votes[gameId] = (votes[gameId] || 0) + 1;
-  saveVotes(votes);
-  localStorage.setItem('s3t_voted', 'true');
-  renderVotes();
+  const v = getVotes(); v[id] = (v[id]||0)+1; saveVotes(v);
+  localStorage.setItem('s3t_voted','true'); renderVotes();
 }
 
 function renderVotes() {
-  const votes = getVotes();
-  const voted = hasVoted();
-  const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
-  const grid = document.getElementById('vote-grid');
-  grid.innerHTML = GAMES.map(g => {
-    const count = votes[g.id] || 0;
-    const pct = totalVotes > 0 ? Math.round(count / totalVotes * 100) : 0;
+  const votes = getVotes(), voted = hasVoted();
+  const total = Object.values(votes).reduce((a,b)=>a+b, 0);
+  document.getElementById('vote-grid').innerHTML = GAMES.map(g => {
+    const c = votes[g.id]||0, pct = total>0 ? Math.round(c/total*100) : 0;
+    const tagColor = g.tag === 'FREE' ? 'bg-accent-green/20 text-accent-green' : g.tag === 'NEW' ? 'bg-cyan-500/20 text-cyan-400' : '';
     return `
-      <div class="bg-dark-700 rounded-xl border border-dark-600 overflow-hidden card-hover">
-        <img src="${g.img}" alt="${g.name}" class="w-full h-32 object-cover" loading="lazy" onerror="this.style.display='none'">
+      <div class="bg-dark-800/50 rounded-xl border border-dark-600/30 overflow-hidden card-hover backdrop-blur">
+        <div class="relative">
+          <img src="${g.img}" alt="${g.name}" class="w-full h-36 object-cover" loading="lazy" onerror="this.parentElement.style.display='none'">
+          ${g.tag ? `<span class="absolute top-2 right-2 text-[10px] font-bold tracking-wider px-2 py-0.5 rounded ${tagColor}">${g.tag}</span>` : ''}
+        </div>
         <div class="p-4">
-          <div class="flex items-center justify-between mb-1">
-            <span class="font-medium">${g.name}</span>
-            ${g.tag ? `<span class="text-xs">${g.tag}</span>` : ''}
-          </div>
-          <div class="text-xs text-gray-400 mb-3">${g.players} คน · ${g.price}</div>
-          <div class="flex items-center gap-2">
-            <button onclick="vote('${g.id}')"
-              class="vote-btn flex-1 py-2 rounded-lg text-sm font-medium ${voted ? 'bg-dark-600 text-gray-500 cursor-not-allowed' : 'bg-neon-purple/20 text-neon-purple hover:bg-neon-purple/30 border border-neon-purple/30'}"
-              ${voted ? 'disabled' : ''}>
-              ${voted ? `${count} votes (${pct}%)` : '👍 Vote'}
-            </button>
-          </div>
-          ${voted && totalVotes > 0 ? `<div class="mt-2 bg-dark-800 rounded-full h-1.5 overflow-hidden"><div class="bg-neon-purple h-full rounded-full" style="width:${pct}%"></div></div>` : ''}
+          <a href="${g.steam}" target="_blank" class="font-display text-sm tracking-wide hover:text-cyan-400 transition-colors">${g.name}</a>
+          <p class="text-xs text-gray-500 mt-0.5">${g.desc}</p>
+          <p class="text-[10px] text-gray-600 mt-1">${g.players} players · ${g.price}</p>
+          <button onclick="vote('${g.id}')"
+            class="vote-btn w-full mt-3 py-2 rounded-lg text-xs font-medium tracking-wider ${voted ? 'bg-dark-700 text-gray-500 cursor-default' : 'bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 border border-cyan-500/20 active:bg-cyan-500/30'}"
+            ${voted ? 'disabled' : ''}>
+            ${voted ? `${c} VOTES (${pct}%)` : 'VOTE'}
+          </button>
+          ${voted && total>0 ? `<div class="mt-2 bg-dark-900 rounded-full h-1 overflow-hidden"><div class="vote-bar bg-cyan-500/60 h-full rounded-full" style="width:${pct}%"></div></div>` : ''}
         </div>
       </div>`;
   }).join('');
 }
 
-// === SCHEDULE ===
 function renderSchedule() {
-  const body = document.getElementById('schedule-body');
-  body.innerHTML = SCHEDULE.map(s => {
-    const statusMap = {
-      upcoming: '<span class="text-neon-green">🟢 อาทิตย์นี้</span>',
-      vote: '<span class="text-neon-blue">🗳️ รอ vote</span>',
-      done: '<span class="text-gray-500">✅ เล่นแล้ว</span>',
-      cancelled: '<span class="text-red-400">❌ งด</span>',
-    };
-    return `<tr class="hover:bg-dark-600/50">
-      <td class="px-4 py-3 font-medium">${s.date}</td>
-      <td class="px-4 py-3">${s.game}</td>
-      <td class="px-4 py-3">${statusMap[s.status] || s.status}</td>
-    </tr>`;
+  const s = { upcoming: '<span class="text-cyan-400 font-medium">This Week</span>',
+    vote: '<span class="text-gray-500">Vote Open</span>',
+    done: '<span class="text-gray-600">Played</span>',
+    cancelled: '<span class="text-red-400/60">Skipped</span>' };
+  document.getElementById('schedule-body').innerHTML = SCHEDULE.map(r => `
+    <tr class="hover:bg-dark-700/30 transition-colors">
+      <td class="px-5 py-3 text-gray-300 text-sm">${r.date}</td>
+      <td class="px-5 py-3 text-sm ${r.status==='upcoming'?'text-cyan-400 font-medium':'text-gray-400'}">${r.game}</td>
+      <td class="px-5 py-3 text-xs">${s[r.status]||r.status}</td>
+    </tr>`).join('');
+}
+
+function renderRecommend() {
+  document.getElementById('recommend-grid').innerHTML = GAMES.filter(g=>g.tag).map(g => {
+    const tagColor = g.tag === 'FREE' ? 'text-accent-green' : 'text-cyan-400';
+    return `
+    <a href="${g.steam}" target="_blank" class="flex gap-4 bg-dark-800/30 rounded-xl p-3 border border-dark-600/20 card-hover backdrop-blur group">
+      <img src="${g.img}" alt="${g.name}" class="w-24 h-14 object-cover rounded-lg flex-shrink-0" loading="lazy" onerror="this.style.display='none'">
+      <div class="min-w-0">
+        <p class="text-sm font-medium group-hover:text-cyan-400 transition-colors">${g.name} <span class="text-[10px] ${tagColor}">${g.tag}</span></p>
+        <p class="text-xs text-gray-500 truncate">${g.desc}</p>
+        <p class="text-[10px] text-gray-600 mt-0.5">${g.players} · ${g.price}</p>
+      </div>
+    </a>`;
   }).join('');
 }
 
-// === RECOMMEND ===
-function renderRecommend() {
-  const grid = document.getElementById('recommend-grid');
-  grid.innerHTML = GAMES.filter(g => g.tag).map(g => `
-    <a href="${g.steam}" target="_blank" class="flex gap-4 bg-dark-700 rounded-xl p-4 border border-dark-600 card-hover">
-      <img src="${g.img}" alt="${g.name}" class="w-24 h-14 object-cover rounded-lg flex-shrink-0" loading="lazy" onerror="this.style.display='none'">
-      <div class="min-w-0">
-        <div class="font-medium">${g.name} ${g.tag}</div>
-        <div class="text-xs text-gray-400">${g.desc}</div>
-        <div class="text-xs text-neon-purple mt-1">${g.players} คน · ${g.price}</div>
-      </div>
-    </a>`).join('');
-}
-
-// === COUNTDOWN ===
 function updateCountdown() {
-  const now = new Date();
-  const diff = NEXT_SESSION.date - now;
-  const el = document.getElementById('countdown-timer');
-  if (diff <= 0) {
-    el.textContent = 'LIVE NOW!';
-    document.getElementById('live-badge').classList.remove('hidden');
-    return;
-  }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  el.textContent = d > 0 ? `${d}d ${h}h ${m}m` : `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const diff = NEXT_SESSION.date - new Date(), el = document.getElementById('countdown-timer');
+  if (diff <= 0) { el.textContent = 'LIVE NOW'; document.getElementById('live-badge').classList.remove('hidden'); return; }
+  const d=Math.floor(diff/864e5), h=Math.floor(diff%864e5/36e5), m=Math.floor(diff%36e5/6e4), s=Math.floor(diff%6e4/1e3);
+  el.textContent = d>0 ? `${d}D ${h}H ${m}M` : `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-// === INIT ===
-renderVotes();
-renderSchedule();
-renderRecommend();
-updateCountdown();
+renderVotes(); renderSchedule(); renderRecommend(); updateCountdown();
 setInterval(updateCountdown, 1000);
 </script>
 </body>
