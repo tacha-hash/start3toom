@@ -159,7 +159,10 @@
         <div class="text-center mb-6">
           <h2 class="font-display text-2xl tracking-wide text-accent-orange glow-text-orange">โหวตเกมส์อาทิตย์หน้า</h2>
           <p class="text-gray-400 text-sm mt-1">กดโหวต หรือกดดูรายละเอียดเกมส์ได้เลย!</p>
+          <p class="text-[10px] text-gray-600 mt-1" id="vote-total"></p>
         </div>
+        <!-- Leaderboard -->
+        <div class="mb-6 hidden" id="vote-leaderboard"></div>
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="vote-grid"></div>
         <!-- Detail popup -->
         <div id="game-detail" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" onclick="if(event.target===this)closeDetail()">
@@ -607,20 +610,60 @@ async function vote(id) {
 // Vote — compact cards with detail popup
 function renderVotes() {
   const votes=voteData, voted=hasVoted(), total=Object.values(votes).reduce((a,b)=>a+b,0);
+
+  // Total count
+  document.getElementById('vote-total').textContent = total > 0 ? `รวม ${total} โหวต สัปดาห์นี้` : '';
+
+  // Leaderboard — top 3
+  const lb = document.getElementById('vote-leaderboard');
+  if (total > 0) {
+    const sorted = [...GAMES].filter(g=>votes[g.id]).sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0));
+    const medals = ['🥇','🥈','🥉'];
+    lb.classList.remove('hidden');
+    lb.innerHTML = `<div class="bg-dark-800/50 rounded-2xl border border-dark-600/30 p-4">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-display text-xs tracking-widest text-accent-orange uppercase">อันดับ</span>
+        <span class="text-[10px] text-gray-600">${total} โหวต</span>
+      </div>
+      ${sorted.slice(0,3).map((g,i) => {
+        const c=votes[g.id]||0, pct=Math.round(c/total*100);
+        const barColor = i===0?'bg-accent-orange':i===1?'bg-cyan-400':'bg-gray-500';
+        return `<div class="flex items-center gap-3 ${i>0?'mt-2':''}">
+          <span class="text-lg">${medals[i]||''}</span>
+          <img src="${g.img}" class="w-10 h-6 object-cover rounded" loading="lazy">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium ${i===0?'text-accent-orange':'text-gray-300'}">${g.name}</span>
+              <span class="text-xs ${i===0?'text-accent-orange font-bold':'text-gray-500'}">${c} (${pct}%)</span>
+            </div>
+            <div class="mt-1 bg-dark-900 rounded-full h-2 overflow-hidden">
+              <div class="vote-bar ${barColor} h-full rounded-full" style="width:${pct}%"></div>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  } else {
+    lb.classList.add('hidden');
+  }
+
+  // Game cards
   document.getElementById('vote-grid').innerHTML = GAMES.map((g,i) => {
     const c=votes[g.id]||0, pct=total>0?Math.round(c/total*100):0;
+    const isTop = total>0 && c===Math.max(...Object.values(votes));
     const tc = g.tag==='ฟรี'?'bg-accent-green/20 text-accent-green':g.tag?'bg-cyan-500/20 text-cyan-400':'';
-    return `<div class="bg-dark-800/50 rounded-xl border border-dark-600/30 overflow-hidden backdrop-blur group">
+    return `<div class="bg-dark-800/50 rounded-xl border ${isTop?'border-accent-orange/50':'border-dark-600/30'} overflow-hidden backdrop-blur group">
       <div class="relative cursor-pointer" onclick="showDetail('${g.id}')">
         <img src="${g.img}" alt="${g.name}" class="w-full h-28 object-cover" loading="lazy" onerror="this.style.display='none'">
         ${g.tag?`<span class="absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded ${tc}">${g.tag}</span>`:''}
+        ${isTop&&total>0?'<span class="absolute top-1.5 left-1.5 text-[9px] bg-accent-orange text-white px-1.5 py-0.5 rounded font-bold">อันดับ 1</span>':''}
         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-xs text-white bg-dark-800/80 px-3 py-1 rounded-full">ดูรายละเอียด</span></div>
       </div>
       <div class="p-3">
         <p class="text-sm font-medium truncate">${g.name}</p>
         <p class="text-[10px] text-gray-500 truncate">${g.desc}</p>
         <button onclick="event.stopPropagation();vote('${g.id}')" class="vote-btn w-full mt-2 py-2 rounded-lg text-xs font-bold tracking-wider ${voted?'bg-dark-700 text-gray-500 cursor-default':'bg-gradient-to-r from-cyan-500/20 to-accent-orange/20 text-white hover:from-cyan-500/30 hover:to-accent-orange/30 border border-cyan-500/20'}" ${voted?'disabled':''}>${voted?`${c} โหวต (${pct}%)`:'โหวต'}</button>
-        ${voted&&total>0?`<div class="mt-1.5 bg-dark-900 rounded-full h-1 overflow-hidden"><div class="vote-bar bg-cyan-500/60 h-full rounded-full" style="width:${pct}%"></div></div>`:''}</div></div>`;
+        ${voted&&total>0?`<div class="mt-1.5 bg-dark-900 rounded-full h-1 overflow-hidden"><div class="vote-bar ${isTop?'bg-accent-orange':'bg-cyan-500/60'} h-full rounded-full" style="width:${pct}%"></div></div>`:''}</div></div>`;
   }).join('');
 }
 
@@ -746,10 +789,14 @@ function renderContent() {
 }
 
 function updateCountdown() {
-  const diff=NEXT_SESSION.date-new Date(), el=document.getElementById('countdown-timer');
+  // Use Bangkok timezone
+  const now = new Date(new Date().toLocaleString('en-US', {timeZone:'Asia/Bangkok'}));
+  const target = NEXT_SESSION.date;
+  const diff = target - now;
+  const el = document.getElementById('countdown-timer');
   if(diff<=0){el.textContent='LIVE NOW';document.getElementById('live-badge').classList.remove('hidden');return;}
   const d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);
-  el.textContent=d>0?`${d}D ${h}H ${m}M`:`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.textContent=d>0?`${d}วัน ${h}ชม. ${m}น.`:`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
 // === AUTO LIVE CHECK ===
