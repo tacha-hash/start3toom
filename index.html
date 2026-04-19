@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Start 3ทุ่ม — Game Night</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Russo+One&family=Noto+Sans+Thai:wght@300;400;500;700&display=swap" rel="stylesheet">
   <script>
@@ -65,17 +67,39 @@
           <p class="text-xs text-gray-500 tracking-widest uppercase">Game Night Every Sunday 21:00</p>
         </div>
       </div>
-      <div class="flex items-center gap-3">
-        <!-- View Mode Toggle -->
-        <div class="flex bg-dark-800 rounded-lg border border-dark-600/30 text-xs overflow-hidden">
-          <button onclick="setView('home')" id="btn-home" class="px-3 py-1.5 tracking-wider bg-dark-700 text-cyan-400">HOME</button>
-          <button onclick="setView('single')" id="btn-single" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">LIVE</button>
-          <button onclick="setView('multi')" id="btn-multi" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">4-VIEW</button>
-          <button onclick="setView('content')" id="btn-content" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">CONTENT</button>
-          <button onclick="setView('report')" id="btn-report" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">REPORT</button>
+      <div class="flex items-center gap-2">
+        <!-- Desktop nav -->
+        <nav class="hidden sm:flex bg-dark-800 rounded-lg border border-dark-600/30 text-xs overflow-hidden">
+          <a href="#/" onclick="setView('home')" id="btn-home" class="px-3 py-1.5 tracking-wider bg-dark-700 text-cyan-400">HOME</a>
+          <a href="#/live" onclick="setView('single')" id="btn-single" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">LIVE</a>
+          <a href="#/4views" onclick="setView('multi')" id="btn-multi" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">4-VIEW</a>
+          <a href="#/content" onclick="setView('content')" id="btn-content" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">CONTENT</a>
+          <a href="#/report" onclick="setView('report')" id="btn-report" class="px-3 py-1.5 tracking-wider text-gray-500 hover:text-gray-300">REPORT</a>
+        </nav>
+        <!-- Mobile hamburger -->
+        <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="sm:hidden p-2 text-gray-400 hover:text-cyan-400 cursor-pointer">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <!-- Auth -->
+        <div id="auth-area">
+          <button onclick="googleSignIn()" id="signin-btn" class="hidden sm:block px-3 py-1.5 rounded-lg bg-dark-800 border border-dark-600/30 text-xs text-gray-400 hover:text-cyan-400 cursor-pointer">Sign In</button>
+          <div id="user-badge" class="hidden items-center gap-2 cursor-pointer" onclick="toggleUserMenu()">
+            <img id="user-pic" class="w-7 h-7 rounded-full">
+            <span id="user-name" class="text-xs text-gray-300 hidden sm:inline"></span>
+          </div>
         </div>
         <div id="live-badge" class="hidden bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full live-pulse tracking-wider">LIVE</div>
       </div>
+    </div>
+    <!-- Mobile menu dropdown -->
+    <div id="mobile-menu" class="hidden sm:hidden border-t border-dark-600/30 px-4 py-2 space-y-1">
+      <a href="#/" onclick="setView('home');this.parentElement.classList.add('hidden')" class="block py-2 text-sm text-gray-400 hover:text-cyan-400">HOME</a>
+      <a href="#/live" onclick="setView('single');this.parentElement.classList.add('hidden')" class="block py-2 text-sm text-gray-400 hover:text-cyan-400">LIVE</a>
+      <a href="#/4views" onclick="setView('multi');this.parentElement.classList.add('hidden')" class="block py-2 text-sm text-gray-400 hover:text-cyan-400">4-VIEW</a>
+      <a href="#/content" onclick="setView('content');this.parentElement.classList.add('hidden')" class="block py-2 text-sm text-gray-400 hover:text-cyan-400">CONTENT</a>
+      <a href="#/report" onclick="setView('report');this.parentElement.classList.add('hidden')" class="block py-2 text-sm text-gray-400 hover:text-cyan-400">REPORT</a>
+      <button onclick="googleSignIn()" id="signin-btn-mobile" class="w-full text-left py-2 text-sm text-gray-400 hover:text-cyan-400 cursor-pointer">Sign In with Google</button>
+    </div>
     </div>
   </header>
 
@@ -362,12 +386,18 @@
         </div>
       </div>
 
-      <!-- Status filter -->
+      <!-- Status filter with counts -->
+      <div class="flex gap-2 mb-3 flex-wrap" id="report-filters">
+        <button onclick="filterReports('all')" data-rf="all" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 cursor-pointer">ทั้งหมด <span id="rf-count-all"></span></button>
+        <button onclick="filterReports('pending')" data-rf="pending" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-dark-600/30 text-gray-500 cursor-pointer">รอดำเนินการ <span id="rf-count-pending"></span></button>
+        <button onclick="filterReports('in-progress')" data-rf="in-progress" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-dark-600/30 text-gray-500 cursor-pointer">กำลังทำ <span id="rf-count-in-progress"></span></button>
+        <button onclick="filterReports('done')" data-rf="done" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-dark-600/30 text-gray-500 cursor-pointer">เสร็จแล้ว <span id="rf-count-done"></span></button>
+      </div>
+      <!-- Sort -->
       <div class="flex gap-2 mb-4">
-        <button onclick="filterReports('all')" data-rf="all" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 cursor-pointer">ทั้งหมด</button>
-        <button onclick="filterReports('pending')" data-rf="pending" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-dark-600/30 text-gray-500 cursor-pointer">รอดำเนินการ</button>
-        <button onclick="filterReports('in-progress')" data-rf="in-progress" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-dark-600/30 text-gray-500 cursor-pointer">กำลังทำ</button>
-        <button onclick="filterReports('done')" data-rf="done" class="rf-tab px-3 py-1.5 rounded-lg text-xs border border-dark-600/30 text-gray-500 cursor-pointer">เสร็จแล้ว</button>
+        <button onclick="setReportSort('latest')" id="sort-latest" class="text-xs text-cyan-400 cursor-pointer">ล่าสุด</button>
+        <span class="text-xs text-gray-600">|</span>
+        <button onclick="setReportSort('upvotes')" id="sort-upvotes" class="text-xs text-gray-500 cursor-pointer hover:text-cyan-400">👍 มากสุด</button>
       </div>
 
       <!-- Public Feedback Board -->
@@ -1081,6 +1111,15 @@ async function submitReport() {
 }
 
 let reportFilter = 'all';
+let reportSort = 'latest';
+function setReportSort(s) {
+  reportSort = s;
+  document.getElementById('sort-latest').classList.toggle('text-cyan-400', s==='latest');
+  document.getElementById('sort-latest').classList.toggle('text-gray-500', s!=='latest');
+  document.getElementById('sort-upvotes').classList.toggle('text-cyan-400', s==='upvotes');
+  document.getElementById('sort-upvotes').classList.toggle('text-gray-500', s!=='upvotes');
+  renderReports();
+}
 function filterReports(f) {
   reportFilter = f;
   document.querySelectorAll('.rf-tab').forEach(t => {
@@ -1133,12 +1172,22 @@ function renderReports() {
   const el = document.getElementById('report-list');
   if (!reports.length) { el.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">ยังไม่มี feedback</p>'; return; }
 
+  // Update filter counts
+  const counts = {all:allApiReports.length, pending:0, 'in-progress':0, done:0};
+  allApiReports.forEach(r => { const s=r.status||'pending'; if(counts[s]!==undefined) counts[s]++; });
+  for(const [k,v] of Object.entries(counts)) {
+    const el2 = document.getElementById('rf-count-'+k);
+    if(el2) el2.textContent = `(${v})`;
+  }
+
   if (reportFilter !== 'all') {
     reports = reports.filter(r => (r.status||'pending') === reportFilter);
   }
   if (!reports.length) { el.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">ไม่มี feedback ในหมวดนี้</p>'; return; }
 
-  reports.sort((a,b) => (b.upvotes||0) - (a.upvotes||0));
+  // Sort
+  if (reportSort === 'upvotes') reports.sort((a,b) => (b.upvotes||0) - (a.upvotes||0));
+  else reports.sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
   const upvoted = getUpvoted();
   const typeLabel = { feature:'ฟีเจอร์', bug:'Bug', game:'เกมส์', other:'อื่นๆ' };
   const typeColor = { feature:'text-cyan-400', bug:'text-red-400', game:'text-accent-green', other:'text-gray-400' };
@@ -1184,6 +1233,67 @@ setView = function(v) {
 };
 
 window.addEventListener('hashchange', applyRoute);
+
+// === GOOGLE AUTH ===
+const GAUTH_CLIENT_ID = '492546940674-c3sf5t15e83rfr8enemkivrs9u2108df.apps.googleusercontent.com';
+let authUser = JSON.parse(localStorage.getItem('auth_user')||'null');
+let authToken = localStorage.getItem('auth_token')||null;
+
+function googleSignIn() {
+  google.accounts.id.initialize({
+    client_id: GAUTH_CLIENT_ID,
+    callback: onGoogleSignIn,
+    auto_select: true,
+  });
+  google.accounts.id.prompt();
+}
+
+async function onGoogleSignIn(res) {
+  try {
+    const r = await fetch(_B+'auth/google', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({idToken: res.credential})
+    });
+    if (!r.ok) throw 0;
+    const d = await r.json();
+    authToken = d.token;
+    authUser = d.user;
+    localStorage.setItem('auth_token', authToken);
+    localStorage.setItem('auth_user', JSON.stringify(authUser));
+    updateAuthUI();
+  } catch(e) { console.error('Auth failed', e); }
+}
+
+function signOut() {
+  authUser = null; authToken = null;
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('auth_user');
+  updateAuthUI();
+}
+
+function updateAuthUI() {
+  const btn = document.getElementById('signin-btn');
+  const btnM = document.getElementById('signin-btn-mobile');
+  const badge = document.getElementById('user-badge');
+  if (authUser) {
+    if(btn) btn.classList.add('hidden');
+    if(btnM) btnM.textContent = `${authUser.name} (Sign Out)`;
+    if(btnM) btnM.onclick = signOut;
+    badge.classList.remove('hidden');
+    badge.classList.add('flex');
+    document.getElementById('user-pic').src = authUser.picture||'';
+    document.getElementById('user-name').textContent = authUser.name||'';
+  } else {
+    if(btn) btn.classList.remove('hidden');
+    if(btnM) btnM.textContent = 'Sign In with Google';
+    if(btnM) btnM.onclick = googleSignIn;
+    badge.classList.add('hidden');
+    badge.classList.remove('flex');
+  }
+}
+function toggleUserMenu() { signOut(); }
+// Init auth UI
+try { updateAuthUI(); if(authUser && window.google) google.accounts.id.initialize({client_id:GAUTH_CLIENT_ID,callback:onGoogleSignIn,auto_select:true}); } catch{}
 
 // Contact popups
 function toggleContact(name) {
