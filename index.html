@@ -657,12 +657,19 @@ async function unvote() {
   renderVotes();
 }
 
+// Filter: only count votes for actual game IDs in GAMES list
+const GAME_IDS = new Set();
 async function fetchVotes() {
+  if (!GAME_IDS.size) GAMES.forEach(g => GAME_IDS.add(g.id));
   try {
     const r = await fetch(`${VOTE_API}?week=current`);
     if (!r.ok) throw 0;
     const d = await r.json();
-    voteData = d.votes || {};
+    const raw = d.votes || {};
+    voteData = {};
+    for (const [k,v] of Object.entries(raw)) {
+      if (GAME_IDS.has(k)) voteData[k] = v;
+    }
   } catch {
     voteData = JSON.parse(localStorage.getItem('s3t_votes')||'{}');
   }
