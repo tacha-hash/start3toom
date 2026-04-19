@@ -159,6 +159,14 @@
               </div>
             </div>
           </div>
+          <!-- Online users -->
+          <div class="mt-6 pt-4 border-t border-dark-600/20" id="online-section">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-2 h-2 rounded-full bg-accent-green live-pulse"></span>
+              <span class="text-xs text-gray-500">ออนไลน์ <span id="online-count">0</span> คน</span>
+            </div>
+            <div class="flex flex-wrap gap-1" id="online-avatars"></div>
+          </div>
         </div>
       </section>
 
@@ -1299,6 +1307,38 @@ function updateAuthUI() {
   }
 }
 updateAuthUI();
+
+// === ONLINE PRESENCE ===
+const PRESENCE_API = _B+'presence';
+
+async function sendHeartbeat() {
+  if (!authToken) return;
+  try { await fetch(PRESENCE_API, { method:'POST', headers:{'Authorization':'Bearer '+authToken} }); } catch {}
+}
+
+async function fetchOnline() {
+  try {
+    const r = await fetch(PRESENCE_API);
+    if (!r.ok) throw 0;
+    const d = await r.json();
+    const count = d.count || 0;
+    const users = d.online || [];
+    document.getElementById('online-count').textContent = count;
+    document.getElementById('online-avatars').innerHTML = users.slice(0, 30).map(u =>
+      `<img src="${u.picture||''}" alt="${u.name}" title="${u.name}" class="w-7 h-7 rounded-full border border-accent-green/30" loading="lazy" onerror="this.style.display='none'">`
+    ).join('') + (count > 30 ? `<span class="w-7 h-7 rounded-full bg-dark-700 flex items-center justify-center text-xs text-gray-400">+${count-30}</span>` : '');
+    if (!count) document.getElementById('online-section').classList.add('hidden');
+    else document.getElementById('online-section').classList.remove('hidden');
+  } catch {
+    document.getElementById('online-section').classList.add('hidden');
+  }
+}
+
+// Heartbeat every 30s if logged in
+setInterval(() => { if(authToken) sendHeartbeat(); }, 30000);
+if (authToken) sendHeartbeat();
+fetchOnline();
+setInterval(fetchOnline, 30000);
 
 // Contact popups
 function toggleContact(name) {
